@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 5.4 Hierarchies</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 5.4 Hierarchies">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Hierarchies"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Finding-changes.html#Finding-changes" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Hierarchies-1"></a>
+<h2 class="section">5.4 Hierarchies</h2>
+
+<p>A hierarchy tends to be an organization where there is a directional
+one-to-many relationship between parent records and their associated
+children.  <code>combine</code> works with hierarchies within reference files
+when the file has a record for each node and each record points to its
+parent in the hierarchy.
+</p>
+<p>Because the hierarchy is assumed to be stored in a reference file, it
+is accessed by matching to a data record.  Once an individual reference
+record has been matched to the data record, its relationship to other 
+records within the hierarchy is followed through the hierarchy until
+there is no further to go.
+</p>
+<p>The standard process is to assume that the key that matched to the
+data file key is at the top of the hierarchy.  When traversing the 
+hierarchy, <code>combine</code> looks for the key on the current record in
+the hierarchy key of other reference records.  This repeats until
+there are no further linkages from one record to the next.  For each
+record that is linked to the hierarchy, that record is treated as a 
+reference record that matched the data record.
+</p>
+<p>In this section, we&rsquo;ll use the following hierarchy file.  It is a simple
+hierarchy tree with &lsquo;<samp>Grandfather</samp>&rsquo; as the top node and 2 levels of
+entries below.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Grandfather,
+Father,Grandfather
+Uncle,Grandfather
+Me,Father
+Brother,Father
+Cousin,Uncle
+</pre></td></tr></table>
+
+<p>If my data file consisted only of a record with the key &lsquo;<samp>Grandfather</samp>&rsquo;,
+then the following command would result in the records listed after it.  
+Each record written includes the entry itself and its parent.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -D ',' -w -d ',' -r test1.tmp -k 1 -m 1 -a 2 -D ',' \
+        -o 1-2 test2.tmp
+
+Grandfather,   
+Father,Grandfather
+Me,Father
+Brother,Father
+Uncle,Grandfather
+Cousin,Uncle
+</pre></td></tr></table>
+
+<p>If we are only interested in the endpoints (in this case all the lowest-level 
+descendants of &lsquo;<samp>Grandfather</samp>&rsquo;), we can use the option &lsquo;<samp>-l</samp>&rsquo;.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -D ',' -w -d ',' -r test1.tmp -k 1 -m 1 -a 2 -D ',' -o 1 \
+        -l test2.tmp
+
+Me
+Brother
+Cousin
+</pre></td></tr></table>
+
+<p>We can arrive at the same number of records, each containing the entire hierarchy
+traversed to get to the leaf nodes, by using the option &lsquo;<samp>--flatten-hierarchy</samp>&rsquo;
+(&lsquo;<samp>-F</samp>&rsquo;).  This option takes a number as an argument, and then includes 
+information from that many records found in traversing the hierarchy, starting from
+the record that matched the data record.  This example tells <code>combine</code> to report
+three levels from the matching &lsquo;<samp>Grandfather</samp>&rsquo; record.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -D ',' -w -d ',' -r test1.tmp -k 1 -m 1 -a 2 -D ',' -o 1 \
+        -F 3 test2.tmp
+
+Grandfather,Father,Me
+Grandfather,Father,Brother
+Grandfather,Uncle,Cousin
+</pre></td></tr></table>
+
+<p>As with other areas within <code>combine</code>, the hierarchy manipulation is extensible
+through Guile.  The key fields can be modified as with any other fields.  See section <a href="Field-Specifiers.html#Field-Specifiers">Field-specific extensions</a>, for details.  The matches within the hierarchy 
+can be further filtered, using the &lsquo;<samp>h</samp>&rsquo; suboption of the option &lsquo;<samp>-x</samp>&rsquo;.
+(see section <a href="Extending-combine.html#Extending-combine">Extending <code>combine</code></a>.)  As with matches between reference records and data 
+this filtering can allow you to perform fuzzy comparisons, to do more complex 
+calculations to filter the match, or to decide when you have gone far enough and would 
+like to stop traversing the hierarchy.
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Finding-changes.html#Finding-changes" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

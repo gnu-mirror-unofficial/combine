@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 5.2 Aggregation</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 5.2 Aggregation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Aggregation"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Rearranging-fields.html#Rearranging-fields" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Finding-changes.html#Finding-changes" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Aggregation-1"></a>
+<h2 class="section">5.2 Aggregation</h2>
+
+<p>One feature of <code>combine</code> is aggregation.  In other words, based on
+a set of keys in a data file, create a new file containing a summary record
+for each unique combination of values that appears in those keys.
+</p>
+<p>This is a special case of reference-file based output in that the reference
+file and the data file are the same file.  We are using it both to build 
+the list of keys and to provide the values to summarize.
+</p>
+<p>Here is a simple example.  Suppose my 4-year-old were flipping 
+Sacajawea<a name="DOCF3" href="combine_fot.html#FOOT3">(3)</a>
+dollar coins and recording the results, along with the time and the date.
+A portion of the resulting file might look like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Monday	27 Oct 2003	14:02:01	Head	1.00
+Monday	27 Oct 2003	14:03:05	Head	1.00
+Monday	27 Oct 2003	14:03:55	Tail	1.00
+Monday	27 Oct 2003	14:04:30	Head	1.00
+Monday	27 Oct 2003	14:06:12	Tail	1.00
+Monday	27 Oct 2003	14:08:43	Head	1.00
+Monday	27 Oct 2003	14:54:52	Head	1.00
+Monday	27 Oct 2003	19:59:59	Tail	1.00
+Tuesday	28 Oct 2003	08:02:01	Tail	5.00
+Tuesday	28 Oct 2003	08:02:16	Tail	5.00
+Tuesday	28 Oct 2003	08:02:31	Head	5.00
+Tuesday	28 Oct 2003	08:02:46	Tail	5.00
+Wednesday	29 Oct 2003	12:02:09	Head	10.00
+</pre></td></tr></table>
+
+<p>Then if I wanted to measure her daily performance, I could count the number
+of coin flips per day, with the following command.  
+</p>
+<p>The option &lsquo;<samp>--data-is-reference</samp>&rsquo; tells the program to read the file 
+only once, bulding the list of keys as it goes.  This is useful for 
+aggregations, and it requires that the key fields be the same and that
+we only keep one copy of each key (with the &lsquo;<samp>--unique</samp>&rsquo; option).
+</p>
+<p>The records come out in an unspecified order.  If you require a specific 
+order, you can pipe the result through the <code>sort</code> command.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">% combine --input-field-delimiter=&quot;	&quot; --data-is-reference \
+          --count --reference-file=testcoin.txt \
+          --output-field-delimiter=&quot;,&quot; -D &quot;	&quot; \
+          --key-fields=2 --data-key-fields=2 --write-output \
+          --output-fields=2 --unique testcoin.txt
+28 Oct 2003,4
+29 Oct 2003,1
+27 Oct 2003,8
+Statistics for reference file testcoin.txt
+  Number of records read:                           13
+  Number of records dropped by filter:               0
+  Number of records stored:                          3
+  Number of records matched on key:                  3
+  Number of records matched fully:                   3
+  Number of reference-data matches:                 13
+</pre></td></tr></table>
+
+<p>An equivalent SQL statement, assuming that the table has been created
+would be.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SELECT Date, COUNT (Result)
+  FROM Coinflip
+  GROUP BY Date;
+</pre></td></tr></table>
+
+<p>If she wanted to count the number of heads and tails, and also the 
+amount she bet on each, she could do the following.  (I have shortened
+the options you have already seen to their 1-byte equivalents.)
+</p>
+<p>The specification of the field to sum says to keep 2 decimal places.
+<code>combine</code> works with integers if you don&rsquo;t say otherwise.  The
+option &lsquo;<samp>--counter-size</samp>&rsquo; tells the program to use at least that
+many bytes to present counters and sums.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">% combine -D &quot;	&quot; -M -n --sum-fields=5.2 --counter-size=8 \
+          -r testcoin.txt -d &quot;,&quot; -D &quot;	&quot; -k 4 -m 4 -w -o 4 \
+          -u testcoin.txt
+Head,       7,   20.00
+Tail,       6,   18.00
+Statistics for reference file testcoin.txt
+  Number of records read:                           13
+  Number of records dropped by filter:               0
+  Number of records stored:                          2
+  Number of records matched on key:                  2
+  Number of records matched fully:                   2
+  Number of reference-data matches:                 13
+</pre></td></tr></table>
+
+<p>An equivalent SQL statement, assuming again that the table has been 
+created would be.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SELECT Result, COUNT (Result), Sum (Wager)
+  FROM Coinflip
+  GROUP BY Result;
+</pre></td></tr></table>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Rearranging-fields.html#Rearranging-fields" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Finding-changes.html#Finding-changes" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

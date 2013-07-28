@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 2.2 File Options</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 2.2 File Options">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="File-Options"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="General-Options.html#General-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Data-Files.html#Data-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="File-Options-1"></a>
+<h2 class="section">2.2 File Options</h2>
+<a name="index-file-options"></a>
+<a name="index-options_002c-file"></a>
+<a name="index-file-structure-options"></a>
+<a name="index-options_002c-file-structure"></a>
+
+<p>There are some attributes that apply to any file.  They include such
+things as the way to tell one record from another, the way to identify
+fields within a record, and the fields in a file that you want to write
+out.
+</p>
+
+<dl compact="compact">
+<dt> &lsquo;<samp>-d <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-field-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Print <var>string</var> between each pair of fields written to output files.
+This can be a comma, a tab character, your mother&rsquo;s maiden name, or the
+full text of the GNU General Public License.  It is your choice.  Of course, 
+it is most useful for it to be something that would not normally occur in
+your data fields and something that your target system will understand.
+Because <code>combine</code> doesn&rsquo;t care about such things, you can even use the
+null character (<code>\0</code>) or the newline character (<code>\n</code>).
+</p>
+</dd>
+<dt> &lsquo;<samp>--no-output-field-delimiter</samp>&rsquo;</dt>
+<dd><p>This means that there is to be no delimiter between fields in the output file
+or files.  It will prevent the input field delimiter from being taken as the 
+output field delimiter.  In cases like this, it might behoove you either to 
+ensure that the fields have a fixed length or to use Guile to insert your own 
+delimiters before they are written.  When specified along with 
+&lsquo;<samp>--output-field-delimiter</samp>&rsquo;, the option that appears later will override 
+the prior one.
+</p>
+</dd>
+<dt> &lsquo;<samp>-b <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-record-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Similarly here <var>string</var> is whatever string you need to use to tell
+the records apart in output files.  If you don&rsquo;t specify it, <code>combine</code>
+will assume that the usual text format applies, the newline on GNU
+operating systems.  (As of this writing, no port has been made to systems
+where a newline is not the standard end-of-line character.)
+</p>
+</dd>
+<dt> &lsquo;<samp>-D <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--input-field-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Look for <var>string</var> in the associated input file to determine where
+fields start and end.  It can be any string, but it should be the string
+that really separates fields in your file.  Because <code>combine</code> doesn&rsquo;t
+care about such things, you can even use the null character (<code>\0</code>)
+or the newline character (<code>\n</code>).  At present, there is no interpretation
+of quoted strings.  As a result, you may get unexpected results if the delimiter
+shows up in the middle of one of your fields.
+</p>
+<p>When specified for the data file, the value specified is used as the input 
+field delimiter for all reference files and as the output field delimiter for 
+any output files, unless other action is taken.  The options 
+&lsquo;<samp>--no-input-field-delimiter</samp>&rsquo; and &lsquo;<samp>--no-output-field-delimiter</samp>&rsquo; 
+will tell <code>combine</code> that a given file should not have a delimiter.  The 
+options &lsquo;<samp>--input-field-delimiter</samp>&rsquo; and &lsquo;<samp>--output-field-delimiter</samp>&rsquo; 
+will use whatever delimiter you specify rather than the data file input field 
+delimiter.
+</p>
+</dd>
+<dt> &lsquo;<samp>--no-input-field-delimiter</samp>&rsquo;</dt>
+<dd><p>This means that there is no delimiter between fields in the specified input file
+or files.  It will prevent the data file input field delimiter from being taken 
+as the input field delimiter for a reference file.  When specified along with 
+&lsquo;<samp>--output-field-delimiter</samp>&rsquo;, the option that appears later will override 
+the prior one.
+</p>
+</dd>
+<dt> &lsquo;<samp>-B <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--input-record-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Similarly here <var>string</var> is whatever string you need to use to tell
+the records apart in input files.  If you don&rsquo;t specify it, <code>combine</code>
+will assume that the usual text format applies, the newline on GNU
+operating systems.
+</p>
+</dd>
+<dt> &lsquo;<samp>-L <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--input-record-length=<var>number</var></samp>&rsquo;</dt>
+<dd><p>If the records are all of the same length (whether of not there is a
+linefeed or a &lsquo;<samp>W</samp>&rsquo; between them), you can specify a record length.
+<code>combine</code> will then split the file into records all of exactly
+<var>NUMBER</var> bytes long.  If there are linefeeds or carriage returns
+between records, be sure to add them to the count.  If the length is not
+specified, <code>combine</code> will assume the records have a delimiter between
+them.
+</p>
+</dd>
+<dt> &lsquo;<samp>-p</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--match-optional</samp>&rsquo;</dt>
+<dd><p>Make it unnecessary to find a match to this file for inclusion in data
+file based output and for the further processing of a data record.  All 
+matches are required by default.  
+</p>
+<p>When applied to a reference file, this means that records based on a data 
+record may be written without a match to a key in this reference file, 
+and any output from fields in this file will be left blank (or substituted 
+if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  
+</p>
+<p>When applied to a data file, this means that in the file based on the data
+file records, records will be written at the end of processing for reference
+file records that were not matched by a data file record.  Any output 
+specified from fields in the data file will be left blank (or substituted
+if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  If there is more than one reference
+file, care should be taken, because the unmatched records from each reference
+file will each become a record in the output file.  This has no effect on 
+reference-file-based output.
+</p>
+</dd>
+<dt> &lsquo;<samp>-P</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--exclude-match</samp>&rsquo;</dt>
+<dd><p>Require no match to this file for inclusion in data file based output and 
+for the further processing of a data record.  All matches are required and
+included by default.  This differs from &lsquo;<samp>--match-optional</samp>&rsquo; in that 
+records that do have a match are excluded from further consideration.
+</p>
+<p>When applied to a reference file, this means that records based on a data 
+record may only be written when there is no match to a key in this reference 
+file, and any output from fields in this file will be left blank (or 
+substituted if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  
+</p>
+<p>When applied to a data file, this means that in the file based on the data
+file records, records will only be written at the end of processing for 
+reference file records that were not matched by a data file record.  Any output 
+specified from fields in the data file will be left blank (or substituted
+if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  If there is more than one reference
+file, care should be taken, because the unmatched records from each reference
+file will each become a record in the output file.  This has no effect on 
+reference-file-based output.
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="General-Options.html#General-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Data-Files.html#Data-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

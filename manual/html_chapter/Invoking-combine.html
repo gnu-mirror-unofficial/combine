@@ -1,0 +1,946 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 2. Invoking combine</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 2. Invoking combine">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Invoking-combine"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Overview.html#Reporting-Bugs" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#General-Options" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Overview.html#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Invoking-combine-1"></a>
+<h1 class="chapter">2. Invoking <code>combine</code></h1>
+
+<p><code>combine</code> is invoked with the command 
+</p>
+<p><code>combine [general options | data file options]&hellip; [reference file options]&hellip; [data files]</code>
+</p>
+<p>The various options are described in the following sections. 
+</p>
+<p>The arguments to the command are data files, an optional list of file
+names to be processed or nothing, indicating that the input will come
+from <code>stdin</code>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#General-Options">2.1 General Options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#File-Options">2.2 File Options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Data-Files">2.3 Data Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Reference-Files">2.4 Reference Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Output-Files">2.5 Output Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Field-Specifiers">2.6 Field Specifiers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Emulation">2.7 Emulation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="General-Options"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Invoking-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#File-Options" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="General-Options-1"></a>
+<h2 class="section">2.1 General Options</h2>
+<a name="index-general-options"></a>
+<a name="index-options_002c-general"></a>
+
+<p>The general options are not specific to any particular file and apply to
+the entire current run of the program.  They are listed below.
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>-R</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--check-all-reference</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--no-check-all-reference</samp>&rsquo;</dt>
+<dd><p>For each data record, check for a match with each of the reference
+files.  This option is set by default.  When turned off with
+&lsquo;<samp>--no-check-all-reference</samp>&rsquo;, processing of that data file record 
+will be stopped as soon as a required match is not fulfilled.  This is 
+a shortcut for speed, but it will change the meaning of any flags or 
+counters set in reference-file-based input.
+</p>
+</dd>
+<dt> &lsquo;<samp>-f</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--flag</samp>&rsquo;</dt>
+<dd><p>In any output based on a reference file, print a flag with the value
+&lsquo;<samp>1</samp>&rsquo; if the record was matched by a data record or &lsquo;<samp>0</samp>&rsquo;
+otherwise.
+</p>
+</dd>
+<dt> &lsquo;<samp>-n</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--count</samp>&rsquo;</dt>
+<dd><p>In any output based on a reference file, print a new field which is a
+count of the number of data records that matched the current reference
+record.
+</p>
+</dd>
+<dt> &lsquo;<samp>-z <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--counter-size=<var>number</var></samp>&rsquo;</dt>
+<dd><p>If counters or sums of data fields are being written into
+reference-based output, make them <var>number</var> bytes long.
+</p>
+</dd>
+<dt> &lsquo;<samp>--statistics</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--no-statistics</samp>&rsquo;</dt>
+<dd><p>At the end of the processing, write to <code>stderr</code> counts of the
+number of records read and matched from each file processed.  The option
+is enabled by default.  When turned off with &lsquo;<samp>--no-statistics</samp>&rsquo;
+print no statistics.
+</p>
+</dd>
+<dt> &lsquo;<samp>--verbose</samp>&rsquo;</dt>
+<dd><p>Write all the information that is possible about the processing to
+<code>stderr</code>.  This includes a summary of the options that have been
+set and running counters of the number of records processed.
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<a name="File-Options"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#General-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Data-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="File-Options-1"></a>
+<h2 class="section">2.2 File Options</h2>
+<a name="index-file-options"></a>
+<a name="index-options_002c-file"></a>
+<a name="index-file-structure-options"></a>
+<a name="index-options_002c-file-structure"></a>
+
+<p>There are some attributes that apply to any file.  They include such
+things as the way to tell one record from another, the way to identify
+fields within a record, and the fields in a file that you want to write
+out.
+</p>
+
+<dl compact="compact">
+<dt> &lsquo;<samp>-d <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-field-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Print <var>string</var> between each pair of fields written to output files.
+This can be a comma, a tab character, your mother&rsquo;s maiden name, or the
+full text of the GNU General Public License.  It is your choice.  Of course, 
+it is most useful for it to be something that would not normally occur in
+your data fields and something that your target system will understand.
+Because <code>combine</code> doesn&rsquo;t care about such things, you can even use the
+null character (<code>\0</code>) or the newline character (<code>\n</code>).
+</p>
+</dd>
+<dt> &lsquo;<samp>--no-output-field-delimiter</samp>&rsquo;</dt>
+<dd><p>This means that there is to be no delimiter between fields in the output file
+or files.  It will prevent the input field delimiter from being taken as the 
+output field delimiter.  In cases like this, it might behoove you either to 
+ensure that the fields have a fixed length or to use Guile to insert your own 
+delimiters before they are written.  When specified along with 
+&lsquo;<samp>--output-field-delimiter</samp>&rsquo;, the option that appears later will override 
+the prior one.
+</p>
+</dd>
+<dt> &lsquo;<samp>-b <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-record-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Similarly here <var>string</var> is whatever string you need to use to tell
+the records apart in output files.  If you don&rsquo;t specify it, <code>combine</code>
+will assume that the usual text format applies, the newline on GNU
+operating systems.  (As of this writing, no port has been made to systems
+where a newline is not the standard end-of-line character.)
+</p>
+</dd>
+<dt> &lsquo;<samp>-D <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--input-field-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Look for <var>string</var> in the associated input file to determine where
+fields start and end.  It can be any string, but it should be the string
+that really separates fields in your file.  Because <code>combine</code> doesn&rsquo;t
+care about such things, you can even use the null character (<code>\0</code>)
+or the newline character (<code>\n</code>).  At present, there is no interpretation
+of quoted strings.  As a result, you may get unexpected results if the delimiter
+shows up in the middle of one of your fields.
+</p>
+<p>When specified for the data file, the value specified is used as the input 
+field delimiter for all reference files and as the output field delimiter for 
+any output files, unless other action is taken.  The options 
+&lsquo;<samp>--no-input-field-delimiter</samp>&rsquo; and &lsquo;<samp>--no-output-field-delimiter</samp>&rsquo; 
+will tell <code>combine</code> that a given file should not have a delimiter.  The 
+options &lsquo;<samp>--input-field-delimiter</samp>&rsquo; and &lsquo;<samp>--output-field-delimiter</samp>&rsquo; 
+will use whatever delimiter you specify rather than the data file input field 
+delimiter.
+</p>
+</dd>
+<dt> &lsquo;<samp>--no-input-field-delimiter</samp>&rsquo;</dt>
+<dd><p>This means that there is no delimiter between fields in the specified input file
+or files.  It will prevent the data file input field delimiter from being taken 
+as the input field delimiter for a reference file.  When specified along with 
+&lsquo;<samp>--output-field-delimiter</samp>&rsquo;, the option that appears later will override 
+the prior one.
+</p>
+</dd>
+<dt> &lsquo;<samp>-B <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--input-record-delimiter=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Similarly here <var>string</var> is whatever string you need to use to tell
+the records apart in input files.  If you don&rsquo;t specify it, <code>combine</code>
+will assume that the usual text format applies, the newline on GNU
+operating systems.
+</p>
+</dd>
+<dt> &lsquo;<samp>-L <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--input-record-length=<var>number</var></samp>&rsquo;</dt>
+<dd><p>If the records are all of the same length (whether of not there is a
+linefeed or a &lsquo;<samp>W</samp>&rsquo; between them), you can specify a record length.
+<code>combine</code> will then split the file into records all of exactly
+<var>NUMBER</var> bytes long.  If there are linefeeds or carriage returns
+between records, be sure to add them to the count.  If the length is not
+specified, <code>combine</code> will assume the records have a delimiter between
+them.
+</p>
+</dd>
+<dt> &lsquo;<samp>-p</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--match-optional</samp>&rsquo;</dt>
+<dd><p>Make it unnecessary to find a match to this file for inclusion in data
+file based output and for the further processing of a data record.  All 
+matches are required by default.  
+</p>
+<p>When applied to a reference file, this means that records based on a data 
+record may be written without a match to a key in this reference file, 
+and any output from fields in this file will be left blank (or substituted 
+if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  
+</p>
+<p>When applied to a data file, this means that in the file based on the data
+file records, records will be written at the end of processing for reference
+file records that were not matched by a data file record.  Any output 
+specified from fields in the data file will be left blank (or substituted
+if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  If there is more than one reference
+file, care should be taken, because the unmatched records from each reference
+file will each become a record in the output file.  This has no effect on 
+reference-file-based output.
+</p>
+</dd>
+<dt> &lsquo;<samp>-P</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--exclude-match</samp>&rsquo;</dt>
+<dd><p>Require no match to this file for inclusion in data file based output and 
+for the further processing of a data record.  All matches are required and
+included by default.  This differs from &lsquo;<samp>--match-optional</samp>&rsquo; in that 
+records that do have a match are excluded from further consideration.
+</p>
+<p>When applied to a reference file, this means that records based on a data 
+record may only be written when there is no match to a key in this reference 
+file, and any output from fields in this file will be left blank (or 
+substituted if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  
+</p>
+<p>When applied to a data file, this means that in the file based on the data
+file records, records will only be written at the end of processing for 
+reference file records that were not matched by a data file record.  Any output 
+specified from fields in the data file will be left blank (or substituted
+if specified with the &lsquo;<samp>-O</samp>&rsquo; option).  If there is more than one reference
+file, care should be taken, because the unmatched records from each reference
+file will each become a record in the output file.  This has no effect on 
+reference-file-based output.
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<a name="Data-Files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#File-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Reference-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Data-Files-1"></a>
+<h2 class="section">2.3 Data Files</h2>
+<a name="index-data-file"></a>
+<a name="index-file_002c-data"></a>
+<a name="index-options_002c-data-file"></a>
+
+<p>A data file is either <code>stdin</code>, one or more files, or both.  If
+there is more than one source, they should all share a format that fits
+the specifications provided for output fields, fields holding numeric
+values to be summed, and fields to be used as keys for matching.
+</p>
+<p>The following are the commands that specifically affect the processing
+of the data file.  Some share the same name with options that can also
+apply to reference files.  Those must be on your command line before you
+present your first reference file.  The others could appear anywhere on
+the command line; however, convention dictates that all the data-file
+options should be together before the first reference file is named.
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>-w</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--write-output</samp>&rsquo;</dt>
+<dd><p>Signals the program that output records should be written every time a
+data record satisfies the matching criteria with the reference files.
+The record written will combine all specified output fields from the
+data file record, the matching reference file record(s), and any specified
+constant values.  This option is a positional option for all files, and
+must appear before the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-t <var>filename</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-file=<var>filename</var></samp>&rsquo;</dt>
+<dd><p>If provided, write the data-based output to <var>filename</var>.  Otherwise
+the output will go to <code>stdout</code>.  This option only makes sense if
+you plan to write data-file-based output.  This is a positional option
+for all files and must appear before the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-o <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Write the fields specified by <var>range_string</var> as part of the record
+in any data-based output.  The range specifications share a common
+format with all field specifications for <code>combine</code>.  This option only
+makes sense if you plan to write data-file-based output.  This is a
+positional option and to apply to the data file it must appear before
+the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-K <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-constant=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Write <var>string</var> to the data-file-based output.  This option only
+makes sense if you plan to write data-file-based output.  This is a
+positional option and to apply to the data file it must appear before
+the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-s <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--sum-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>In any reference-file-based output write a sum of the value of the
+fields specified by <var>range_string</var>.  The sum for a given reference
+file record will come from all data file records that matched it.  This
+option only makes sense if you have requested reference-file-based
+output.
+</p>
+<p>If a precision is provided for a sum field, that precision is honored, 
+and decimal fractions up to that many digits will be included in the sum.
+Any further precision on the input fields will be ignored (without 
+rounding) in the sum.  The resulting sum will be written with a decimal
+point and the number of fractional digits implied by the precision.
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<a name="Reference-Files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Data-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Output-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Reference-Files-1"></a>
+<h2 class="section">2.4 Reference Files</h2>
+<a name="index-reference-file"></a>
+<a name="index-file_002c-reference"></a>
+<a name="index-options_002c-reference-file"></a>
+
+<p>A reference file record is expected to match on a set of key fields to a
+data file record.  The parts of a reference file that are necessary for
+processing are read entirely into memory.  You can specify as many
+reference files as you want, depending only on the amount of memory your
+system can spare to hold them.  For any reference file, it is minimally
+required that you specify a file name, a specification of the key fields
+in the reference file, and a specification of the matching key fields in
+the data file.
+</p>
+<p>The following are the options that are related to reference files.  They
+are all positional, and they apply to the processing of the previously
+named reference file.  (Except of course for the reference file name
+itself, which applies to itself.)
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>-r <var>filename</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--reference-file=<var>filename</var></samp>&rsquo;</dt>
+<dd><p>Use <var>filename</var> as a reference file to match to the data file in
+processing.  This option introduces a block of positional options that
+relate to this reference file&rsquo;s processing in <code>combine</code>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-k <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--key-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Use the fields specified by <var>range_string</var> as a key to match to a
+corresponding key in the data file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-m <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--data-key-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Use the fields specified by <var>range_string</var> as the corresponding key
+to a key taken from a reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-a <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hierarchy-key-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Use the fields specified by <var>range_string</var> as a key to perform a
+recursive hierarchical match within the reference file.  This key will
+be matched against values specified in the regular key on the reference
+file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-u</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--unique</samp>&rsquo;</dt>
+<dd><p>Keep only one record for the reference file in memory for each distinct
+key.  By default <code>combine</code> maintains all the records from the
+reference file in memory for processing.  This default allows for
+cartesian products when a key exists multiple times in both the
+reference and data files.
+</p>
+</dd>
+<dt> &lsquo;<samp>-h <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hash-size=<var>number</var></samp>&rsquo;</dt>
+<dd><p>Use the <var>number</var> provided as a base size for allocating a hash table
+to store the records from this reference file.  If this number is too
+small, <code>combine</code> will fail when it tries to record a record it has no
+room for.  If it is only a little bit too small, it will cause
+inefficiency as searching for open space in the hash table will be
+difficult.
+</p>
+</dd>
+<dt> &lsquo;<samp>-H <var>keyword</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hash-movement=<var>keyword</var></samp>&rsquo;</dt>
+<dd><p>One of the keywords <code>binary</code>, <code>number</code>, <code>beginning</code>, 
+or <code>end</code>, indicating how to turn the key into a number with 
+the best variability and least overlap.  The wise choice of this option 
+can cut processing time significantly.  The binary option is the default, 
+and treats the last few bytes (8 on most computers) of the key string(s) 
+as a big number.  The number option converts the entire key to a number
+assuming it is a numeric string.  The other two take the least significant 
+3 bits from each of the first or last few (21 where a 64 bit integer is
+available) bytes in the key strings and turns them into a number.
+</p>
+</dd>
+<dt> &lsquo;<samp>-w</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--write-output</samp>&rsquo;</dt>
+<dd><p>Signals the program that output records should be written for every
+record stored for this reference file.  This will either be one record
+for every record in the reference file or one record for every distinct
+set of keys in the reference file, depending on the setting of the
+option &lsquo;<samp>--unique</samp>&rsquo;.  The record written will include all specified
+output fields from the reference file record, any specified constant
+value for this reference file, and any flag, counter, or sums requested.
+</p>
+</dd>
+<dt> &lsquo;<samp>-t <var>filename</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-file=<var>filename</var></samp>&rsquo;</dt>
+<dd><p>If provided, write the output based on this reference file to
+<var>filename</var>.  Otherwise the output will go to <code>stdout</code>.  This
+option only makes sense if you plan to write output based on this
+reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-o <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Write the fields specified by <var>range_string</var> as part of the record
+in any reference-file- or data-file-based output.  The range
+specifications share a common format with all field specifications for
+<code>combine</code>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-K <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-constant=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Write <var>string</var> to the reference- or data-file-based output.
+</p>
+</dd>
+<dt> &lsquo;<samp>-U</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--up-hierarchy</samp>&rsquo;</dt>
+<dd><p>When traversing the hierarchy from a given reference-file record, use
+the values on that record in the &lsquo;<samp>--hierarchy-key-fields</samp>&rsquo; fields
+to connect to the &lsquo;<samp>--key-fields</samp>&rsquo; fields of other records from the
+reference file.  For most purposes, the presence of the connection on the 
+first record suggests a single parent in a standard hierarchy.  The hierarchy
+traversal stops when the &lsquo;<samp>--hierarchy-key-fields</samp>&rsquo; fields are empty.
+</p>
+<p>If this option is not set, the &lsquo;<samp>--key-fields</samp>&rsquo; fields are used to search 
+for the same values in the &lsquo;<samp>--hierarchy-key-fields</samp>&rsquo; fields of other
+records in the same file.  This allows multiple children of an initial record, 
+and suggests going down in the hierarchy.  The hierarchy traversal stops when 
+no further connection can be made.  The traversal is depth-first.
+</p>
+</dd>
+<dt> &lsquo;<samp>-l</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hierarchy-leaf-only</samp>&rsquo;</dt>
+<dd><p>When traversing a hierarchy, treat only the endpoints as matching records.
+Nodes that have onward connections are ignored except for navigating to the
+leaf nodes.
+</p>
+</dd>
+<dt> &lsquo;<samp>-F <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--flatten-hierarchy=<var>number</var></samp>&rsquo;</dt>
+<dd><p>When traversing a hierarchy, act as the &lsquo;<samp>hierarchy-leaf-only</samp>&rsquo;, except
+save information about the intervening nodes.  Repeat the &lsquo;<samp>output-fields</samp>&rsquo;
+fields <var>number</var> times (leaving them blank if there were fewer levels), 
+starting from the first reference record matched.
+</p></dd>
+</dl>
+
+<hr size="6">
+<a name="Output-Files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Reference-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Field-Specifiers" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Output-Files-1"></a>
+<h2 class="section">2.5 Output Files</h2>
+
+<p>There are two basic kinds of output files: one based on the data records
+and reference records that match them, the other based on a full set of
+records from one reference file with flags, counts, or sums based on the 
+aggregate of the matching data records.
+</p>
+<p>The output file based on the data file consists of information from the
+data file records and any matching reference file records.  The records
+that go into data-based output files can be figured out as follows:
+</p>
+<dl compact="compact">
+<dt> no reference file</dt>
+<dd><p>If there is no reference file, there will be one record for every record
+in the data file, with the exception of any records that were elimitated
+through an extension filter. (see section <a href="Extending-combine.html#Extending-combine">Extending <code>combine</code></a>.) 
+</p>
+</dd>
+<dt> reference files with &lsquo;<samp>--unique</samp>&rsquo; and &lsquo;<samp>--match-optional</samp>&rsquo; options</dt>
+<dd><p>If all reference files are specified with the &lsquo;<samp>--unique</samp>&rsquo; and
+&lsquo;<samp>--match-optional</samp>&rsquo; options, then the records selected for insertion
+into the data-based output file will be the same as those that would be
+selected without a reference file.
+</p>
+</dd>
+<dt> reference files without the &lsquo;<samp>--unique</samp>&rsquo; option</dt>
+<dd><p>If a reference file is not given the &lsquo;<samp>--unique</samp>&rsquo; option and there
+is more than one reference record that matches a given data record, then
+the data record will be represented more than once in the output file,
+each time combined with information from a different matching reference
+record.  If there is more than one reference file where this is the
+case, the result will be multiplicative (e.g. 2 matches in each of 2
+reference files will produce 4 records).  This is the default setting
+for a reference file.
+</p>
+</dd>
+<dt> reference files without the &lsquo;<samp>--match-optional</samp>&rsquo; option</dt>
+<dd><p>If a reference file is not given the &lsquo;<samp>--match-optional</samp>&rsquo; option, then
+any data record that does not have a match in the reference file will
+not be represented in the output file.  This is the default setting.
+</p></dd>
+</dl>
+
+<p>The fields that can appear in data=file-based output can come from the
+data-file record and any matching reference file records.
+</p>
+<p>Reference=file-based output files are simpler.  Depending on the
+existence or not of the &lsquo;<samp>--unique</samp>&rsquo; option, the file will have an
+entry for each of the unique keys or for each of the records in the
+reference file, respectively.
+</p>
+<p>The fields in the reference=file-based output are exclusively from the
+reference file, except for optional fields that can be summarized from
+fields on matching data-file records.
+</p>
+
+<p>The order of the fields in an output record can either be according to
+the default or it can be explicitly specified by the user.
+</p>
+<p>In data=file-based output, the standard field order is as follows.  All the
+fields listed are printed in this order if they are specified.  If an
+output field delimiter is specified, it is put between every pair of
+adjacent fields.  If there is no match for a given reference file (and
+the &lsquo;<samp>--match-optional</samp>&rsquo; option is set for the file), all the fields that
+would normally be provided by that file are filled with spaces for
+fixed-width fields or zero-length for delimited output.
+</p>
+<ul>
+<li> All the data-file output fields (in order)
+</li><li> The constant string set for the data file
+</li><li> For each reference file
+
+  <ul class="toc">
+<li>- The constant string set for the reference file
+  </li><li>- All the reference-file output fields
+  </li></ul>
+
+</li></ul>
+
+<p>In reference=file-based output, the standard field order is as follows.
+All the fields listed are printed in this order if they are specified.
+If an output field delimiter is specified, it is put between every pair
+of adjacent fields.
+</p>
+<ul>
+<li> All the reference-file output fields OR the key fields if no output fields are given
+</li><li> A 1/0 flag indicating whether there was any match
+</li><li> A counter of the number of data records matched
+</li><li> A sum of each of the data-file sum fields from each matching data-file record
+</li></ul>
+
+<p>The order of the fields in any output file can be customized using the
+&lsquo;<samp>--field-order</samp>&rsquo; (or &lsquo;<samp>-O</samp>&rsquo;) option.  The argument for the
+option is a comma-separated list of field identifiers.  Each field
+identifier has 2 parts, a source and a type, separated by a period (.).
+</p>
+<p>The sources are composed of an &lsquo;<samp>r</samp>&rsquo; for reference file or &lsquo;<samp>d</samp>&rsquo;
+for data file followed by an optional number.  The number indicates
+which reference file the field comes from and is ignored for data files.
+Without a number, the first of each is taken.
+</p>
+<p>A third source &lsquo;<samp>s</samp>&rsquo; represents a substitution in the event that the
+preceding reference file field could not be provided because there was
+no match between that reference file and the data file.  The number
+following it, if blank or zero, tells <code>combine</code> to take the field from
+the data file.  Any other number means the corresponding reference file.
+This allows the conditional update of fields from the data file, or a
+prioritization of selections from a variety of reference files.  If you
+are working with fixed-width fields, you should ensure that the lengths
+of the various fields in the substitution chain are the same.
+</p>
+<p>The types are composed similarly.  The identifiers are listed below.
+The number is ignored for identifiers of string constants, flags, and
+counters.  For output fields, a hyphen-separated range of fields can be
+written to avoid having to write a long list.  Any number provided is
+the number of the field in the order it was specified in the &lsquo;<samp>-o</samp>&rsquo;
+or &lsquo;<samp>-s</samp>&rsquo; option on the command line.  In delimited-field files
+this may differ from the field number used in those options.
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>o</samp>&rsquo;</dt>
+<dd><p>Output fields from either reference or data files.
+</p>
+</dd>
+<dt> &lsquo;<samp>k</samp>&rsquo;</dt>
+<dd><p>String constant for either reference or data files.
+</p>
+</dd>
+<dt> &lsquo;<samp>f</samp>&rsquo;</dt>
+<dd><p>Flag (1/0) for reference files.
+</p>
+</dd>
+<dt> &lsquo;<samp>n</samp>&rsquo;</dt>
+<dd><p>Counter for reference files.
+</p>
+</dd>
+<dt> &lsquo;<samp>s</samp>&rsquo;</dt>
+<dd><p>Sum field for reference files.
+</p>
+</dd>
+</dl>
+
+<p>Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">--field-order d.o1,d.o2,d.o3,d.k,r1.o1,s2.o1,s0.o4
+
+--field-order d.o1-3,d.k,r1.o1,s2.o1,s0.o4
+</pre></td></tr></table>
+
+<p>In this case, the first three fields from the data file are followed by
+the constant string from the data file.  Then, if there was a match to
+reference file 1, the first field from that file is taken, otherwise if
+there was a match to reference file 2, the first field from that file is
+taken.  If neither file matched the data record, the fourth field from
+the data record is taken instead.
+</p>
+<p>The second line is equivalent, using a range of fields for convenience.
+</p>
+<hr size="6">
+<a name="Field-Specifiers"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Output-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Emulation" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Field-Specifiers-1"></a>
+<h2 class="section">2.6 Field Specifiers</h2>
+
+<p>There are a number of options that require a list of fields from one of
+the files.  All take an argument consisting of a comma-separated list of
+individual field specifications.
+</p>
+<p>The individual field specifications are of the form
+&lsquo;<samp>s-e.p(instruction)</samp>&rsquo;.  As a standard (with no field delimiter
+given for the file), &lsquo;<samp>s</samp>&rsquo; is a number indicating the starting
+position of the field within the records in th given file, and &lsquo;<samp>e</samp>&rsquo; 
+is a number pointing out the ending position.  If there is no hyphen, the
+single number &lsquo;<samp>s</samp>&rsquo; represents a one-byte field at position &lsquo;<samp>s</samp>&rsquo;.
+If the first number and a hyphen exist without the number &lsquo;<samp>e</samp>&rsquo;, then
+the field is assumed to start at &lsquo;<samp>s</samp>&rsquo; and extend to the end of the
+record.  The numbering of the bytes in the record starts at 1.
+</p>
+<p>If you do provide a delimiter for identifying the borders between fields
+in your file, then <code>combine</code> does not need to count bytes, and you
+just need to provide the field number (starting at 1) of the fields you
+want to declare.  Currently, giving a range of fields results in
+<code>combine</code> acting as though you listed every field from the lower end
+to the upper end of the range individually.  Any precision or
+extensibility information you provide will be applied to each field in
+the range.
+</p>
+<p>The optional &lsquo;<samp>.p</samp>&rsquo; gives the number of digits of precision with
+which the field should be considered.  At present its only practical use
+is in fields to be summed from data files, where it is used in converting
+between string and number formats.
+</p>
+<p>The optional &lsquo;<samp>(instruction)</samp>&rsquo; is intended for extensibility.  For
+output fields and key fields it is a scheme command that should be run
+when the field is read into the system.  If the associated field
+specification is a key for matching reference and data records, this can
+affect the way the records are matched.  If it is a field to be written
+to an output file, it will affect what the user sees.
+</p>
+<p>To refer to the field actually read from the source data within the
+scheme command, use the following sceme variable in the appropriate place 
+in the command: &lsquo;<samp>input-field</samp>&rsquo;
+</p>
+<p>Scheme commands attached to individual fields need to return a character
+string and have available only the current text of the field as
+described above<a name="DOCF1" href="combine_fot.html#FOOT1">(1)</a>.  In delimited
+output, feel free to alter the length of the return string at will.  In
+fixed-width output, it will be your responsibility to ensure that you
+return a string of a useful length if you want to maintain the fixed
+structure.
+</p>
+
+<p>In the following string,
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">1-10,15-20.2,30(HiMom input-field),40-
+</pre></td></tr></table>
+
+<p>The fist field runs from position 1 to 10 in the record.  The second from
+15 to 20, with a stated (but possibly meaningless) precision of 2.  The 
+third is the single byte at position 30, to be adjusted by replacing it 
+with whatever the scheme function <code>HiMom</code> does to it.  The fourth 
+field starts at position 40 and extends to the end of the record.
+</p>
+<p>In a delimited example, the following two sets of options are equivalent.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">-D ',' -o 4,5,6,7,8
+-D ',' -o 4-8
+</pre></td></tr></table>
+
+<p>In both cases the fourth, fifth, sixth, seventh, and eighth
+comma-delimited fields are each treated as an individual field for
+processing.  Note that if you also provide a field order (with the
+&lsquo;<samp>-O</samp>&rsquo; option), that order would refer to these fields as 1, 2, 3,
+4, and 5 because of the order in which you specified them, not caring
+about the order in the original file.
+</p>
+
+<hr size="6">
+<a name="Emulation"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Field-Specifiers" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Emulation-1"></a>
+<h2 class="section">2.7 Emulation</h2>
+
+<p>Because of its simularity with <code>join</code>, <code>combine</code> has an emulation
+mode that allows you to use the syntax of the <code>join</code> command to start
+<code>combine</code>.
+</p>
+<p>The emulation can be started by using &lsquo;<samp>--emulate join</samp>&rsquo; option as the
+first option after the command name.  After that, you can use the same 
+options you get with join.
+</p>
+<p>For details of the <code>join</code> command, see See <a href="../coreutils/join-invocation.html#join-invocation">(coreutils.info)join invocation</a> section &lsquo;Join Invocation&rsquo; in <cite>GNU Coreutils Manual</cite>.
+When tested against the test cases packaged with GNU Coreutils, results are
+identical to join with a couple of exceptions:
+</p>
+<ul>
+<li>
+The sort order can be different.  <code>combine</code> produces records in the order
+of the second input file, with any unmatched records from the first input file
+following in an arbitrary order.
+
+</li><li>
+I change the arguments to the &lsquo;<samp>-o</samp>&rsquo; option in the test script to have
+quotes around the field order list when it is separated by spaces.  <code>combine</code>
+can handle the space-delimited list, but the standard argument handler 
+<code>getopt_long</code> does not interpret them as a single argument.  I don&rsquo;t see the
+need to overcome that.
+
+</li><li>
+There is not a specific test, but I have not yet implemented case-insensitive 
+matching.  It would have failed if tested. 
+
+</li><li>
+One more option that is not implemented in the emulation are the &lsquo;<samp>-j1</samp>&rsquo;
+and &lsquo;<samp>-j2</samp>&rsquo; methods of specifying separate keys for the two files.  Use 
+&lsquo;<samp>-1</samp>&rsquo; and &lsquo;<samp>-2</samp>&rsquo; for that.  The two obsolete options would be interpreted
+as speciying field 1 or field 2 as the common join key, respectively. 
+
+</li></ul>
+
+<p>There are also a number of features of <code>combine</code> that come through in the
+emulation.  The main features relate to the keys: the sort order of the records
+in relation to the keys does not matter to <code>combine</code>.  <code>combine</code> also
+allows you to specify a list of key fields (comma-delimited) rather than just
+one as arguments to &lsquo;<samp>-1</samp>&rsquo;, &lsquo;<samp>-2</samp>&rsquo;, and &lsquo;<samp>-j</samp>&rsquo;.  You should make
+sure that the number of key fields is the same.
+</p>
+<p>Another feature is that the second input file can actually be as many files as 
+you want.  That way you can avoid putting the records from several files together
+if not otherwise necessary.
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 2.7 Emulation</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 2.7 Emulation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Emulation"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Field-Specifiers.html#Field-Specifiers" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Emulation-1"></a>
+<h2 class="section">2.7 Emulation</h2>
+
+<p>Because of its simularity with <code>join</code>, <code>combine</code> has an emulation
+mode that allows you to use the syntax of the <code>join</code> command to start
+<code>combine</code>.
+</p>
+<p>The emulation can be started by using &lsquo;<samp>--emulate join</samp>&rsquo; option as the
+first option after the command name.  After that, you can use the same 
+options you get with join.
+</p>
+<p>For details of the <code>join</code> command, see See <a href="../coreutils/join-invocation.html#join-invocation">(coreutils.info)join invocation</a> section &lsquo;Join Invocation&rsquo; in <cite>GNU Coreutils Manual</cite>.
+When tested against the test cases packaged with GNU Coreutils, results are
+identical to join with a couple of exceptions:
+</p>
+<ul>
+<li>
+The sort order can be different.  <code>combine</code> produces records in the order
+of the second input file, with any unmatched records from the first input file
+following in an arbitrary order.
+
+</li><li>
+I change the arguments to the &lsquo;<samp>-o</samp>&rsquo; option in the test script to have
+quotes around the field order list when it is separated by spaces.  <code>combine</code>
+can handle the space-delimited list, but the standard argument handler 
+<code>getopt_long</code> does not interpret them as a single argument.  I don&rsquo;t see the
+need to overcome that.
+
+</li><li>
+There is not a specific test, but I have not yet implemented case-insensitive 
+matching.  It would have failed if tested. 
+
+</li><li>
+One more option that is not implemented in the emulation are the &lsquo;<samp>-j1</samp>&rsquo;
+and &lsquo;<samp>-j2</samp>&rsquo; methods of specifying separate keys for the two files.  Use 
+&lsquo;<samp>-1</samp>&rsquo; and &lsquo;<samp>-2</samp>&rsquo; for that.  The two obsolete options would be interpreted
+as speciying field 1 or field 2 as the common join key, respectively. 
+
+</li></ul>
+
+<p>There are also a number of features of <code>combine</code> that come through in the
+emulation.  The main features relate to the keys: the sort order of the records
+in relation to the keys does not matter to <code>combine</code>.  <code>combine</code> also
+allows you to specify a list of key fields (comma-delimited) rather than just
+one as arguments to &lsquo;<samp>-1</samp>&rsquo;, &lsquo;<samp>-2</samp>&rsquo;, and &lsquo;<samp>-j</samp>&rsquo;.  You should make
+sure that the number of key fields is the same.
+</p>
+<p>Another feature is that the second input file can actually be as many files as 
+you want.  That way you can avoid putting the records from several files together
+if not otherwise necessary.
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Field-Specifiers.html#Field-Specifiers" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

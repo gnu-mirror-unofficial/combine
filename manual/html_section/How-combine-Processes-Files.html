@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 3. How combine Processes Files</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 3. How combine Processes Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="How-combine-Processes-Files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Emulation.html#Emulation" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="How-combine-Processes-Files-1"></a>
+<h1 class="chapter">3. How <code>combine</code> Processes Files</h1>
+
+<p>The base of <code>combine</code> reads records from a data file (or a series of
+them in a row) and if there is an output request for data records, it
+writes the requested fields out to a file or to <code>stdout</code>.  Here is
+an example of this most simple version of events.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine --write-output --output-fields=1-
+</pre></td></tr></table>
+
+<p>This is essentially an expensive pipe.  It reads from <code>stdin</code> and
+writes the entire record back to <code>stdout</code>.
+</p>
+<p>Introducing a reference file gives more options.  Now <code>combine</code> reads
+the reference file into memory before reading the data file.  For every
+data record, <code>combine</code> then checks to see if it has a match.  The
+following example limits the simple pipe above by restricting the output
+to those records from <code>stdin</code> that share the first 10 bytes in
+common with a record in the reference file.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -w -o 1- -r reference_file.txt --key-fields=1-10 \
+            --data-key-fields=1-10 --unique
+</pre></td></tr></table>
+
+<p>Note that the option &lsquo;<samp>--unique</samp>&rsquo; is used here to prevent more than
+one copy of a key from being stored by <code>combine</code>.  Without it, 
+duplicate keys in the reference file, when matched, would result in
+more than one copy of the matching data record.
+</p>
+<p>The other option with a reference file is to have output based on the
+records in that file, with indicators of how the data file records were
+able to match to them.  In the next example, the same match as above is
+done, but this time we write out a record for every unique key, with a
+flag set to &lsquo;<samp>1</samp>&rsquo; if it was matched by a data record or &lsquo;<samp>0</samp>&rsquo;
+otherwise.  It still reads the data records from <code>stdin</code> and writes
+the output records to <code>stdout</code>.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -r -f reference_file.txt -k 1-10 -m 1-10 -u -w -o 1-10
+</pre></td></tr></table>
+
+<p>Of course, you might want both sets of output at the same time: the list
+of data records that matched the keys in the reference file and a list
+of keys in the reference file with an indication of which ones were
+matched.  In the prior two examples the two different kinds of output
+were written to <code>stdout</code>.  You can still do that if you like, and
+then do a little post-processing to determine where the data-based
+records leave off and the reference-based records begins.  A simpler
+way, however, is to let <code>combine</code> write the information to separate
+files.
+</p>
+<p>In the following example we combine the output specifications from the
+prior two examples and give them each a filename.  Note that the first
+one has a spelled-out &lsquo;<samp>--output-file</samp>&rsquo; while the second one uses the
+shorter 1-letter option &lsquo;<samp>-t</samp>&rsquo;.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -w -o 1- --output-file testdata.txt \
+            -r -f reference_file.txt -k 1-10 -m 1-10 \
+            -u -w -o 1-10 -t testflag.txt
+</pre></td></tr></table>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Emulation.html#Emulation" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

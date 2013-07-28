@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 2.3 Data Files</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 2.3 Data Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Data-Files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="File-Options.html#File-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Reference-Files.html#Reference-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Data-Files-1"></a>
+<h2 class="section">2.3 Data Files</h2>
+<a name="index-data-file"></a>
+<a name="index-file_002c-data"></a>
+<a name="index-options_002c-data-file"></a>
+
+<p>A data file is either <code>stdin</code>, one or more files, or both.  If
+there is more than one source, they should all share a format that fits
+the specifications provided for output fields, fields holding numeric
+values to be summed, and fields to be used as keys for matching.
+</p>
+<p>The following are the commands that specifically affect the processing
+of the data file.  Some share the same name with options that can also
+apply to reference files.  Those must be on your command line before you
+present your first reference file.  The others could appear anywhere on
+the command line; however, convention dictates that all the data-file
+options should be together before the first reference file is named.
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>-w</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--write-output</samp>&rsquo;</dt>
+<dd><p>Signals the program that output records should be written every time a
+data record satisfies the matching criteria with the reference files.
+The record written will combine all specified output fields from the
+data file record, the matching reference file record(s), and any specified
+constant values.  This option is a positional option for all files, and
+must appear before the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-t <var>filename</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-file=<var>filename</var></samp>&rsquo;</dt>
+<dd><p>If provided, write the data-based output to <var>filename</var>.  Otherwise
+the output will go to <code>stdout</code>.  This option only makes sense if
+you plan to write data-file-based output.  This is a positional option
+for all files and must appear before the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-o <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Write the fields specified by <var>range_string</var> as part of the record
+in any data-based output.  The range specifications share a common
+format with all field specifications for <code>combine</code>.  This option only
+makes sense if you plan to write data-file-based output.  This is a
+positional option and to apply to the data file it must appear before
+the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-K <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-constant=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Write <var>string</var> to the data-file-based output.  This option only
+makes sense if you plan to write data-file-based output.  This is a
+positional option and to apply to the data file it must appear before
+the first reference file is named.
+</p>
+</dd>
+<dt> &lsquo;<samp>-s <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--sum-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>In any reference-file-based output write a sum of the value of the
+fields specified by <var>range_string</var>.  The sum for a given reference
+file record will come from all data file records that matched it.  This
+option only makes sense if you have requested reference-file-based
+output.
+</p>
+<p>If a precision is provided for a sum field, that precision is honored, 
+and decimal fractions up to that many digits will be included in the sum.
+Any further precision on the input fields will be ignored (without 
+rounding) in the sum.  The resulting sum will be written with a decimal
+point and the number of fractional digits implied by the precision.
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="File-Options.html#File-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Reference-Files.html#Reference-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

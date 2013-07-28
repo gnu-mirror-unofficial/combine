@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 4. Extending combine</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 4. Extending combine">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Extending-combine"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extension-Options" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Extending-combine-1"></a>
+<h1 class="chapter">4. Extending <code>combine</code></h1>
+
+<p>If <code>combine</code> was built with Guile (GNU&rsquo;s Ubiquitous Intelligent
+Language for Extensibility), you can do anything you want (within reason) to
+extend <code>combine</code>.  This would have been set up when <code>combine</code> was 
+compiled and installed on your computer.  In a number of places, there 
+are built-in opportunities to call Guile with the data that is currently in 
+process.  Using these options, you can use your favorite modules or write your 
+own functions in scheme to manipulate the data and to adjust how <code>combine</code>
+operates on it.
+</p>
+<p>The most common method (in my current usage) of extending <code>combine</code> is
+to alter the values of fields from the input files before they are used
+for matching or for output.  This is done inside the field list by
+adding the scheme statement after the range and precision.  This is
+covered in the section on field specifications. See section <a href="Invoking-combine.html#Field-Specifiers">Field-specific extensions</a>, for details.
+</p>
+<p>Another useful option is the ability to initialize Guile with your own
+program.  To do this, you can use the &lsquo;<samp>--extension-init-file</samp>&rsquo; (or
+&lsquo;<samp>-X</samp>&rsquo;) followed by a file name.  <code>combine</code> will load that
+scheme file into Guile before any processing.  In that way your
+functions will be available when you need them in the running of the
+program.  It certainly beats writing something complicated on the
+command line.
+</p>
+<p>In addition, there are Guile modules included in the distribution, which
+can be used in extension scripts.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Extension-Options">4.1 Extension Options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Guile-Modules">4.2 Guile Modules</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Extension-Options"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Extending-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Guile-Modules" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Extension-Options-1"></a>
+<h2 class="section">4.1 Extension Options</h2>
+<a name="index-extension-options"></a>
+<a name="index-options_002c-extension"></a>
+<p>The remaining extensibility options are called at various points in the
+program: when it starts, when a file is started, when a match is found,
+when a record is read, when a record is written, when a file is closed,
+and at the very end of the program.  The options are listed below along
+with the way to get access to the relevant data.
+</p>
+<p>The various non-field=specific options are as follows.  They all occur
+as arguments to the option &lsquo;<samp>--extension</samp>&rsquo; (or &lsquo;<samp>-x</samp>&rsquo;).
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>l<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Filter records from the current file using the scheme command provided.
+The scheme command must return &lsquo;<samp>#t</samp>&rsquo; (to keep processing the record)
+or &lsquo;<samp>#f</samp>&rsquo; (to ignore this record and move on to the next).  The
+variables &lsquo;<samp>reference-field-n</samp>&rsquo; or &lsquo;<samp>data-field-n</samp>&rsquo; will be
+available to the scheme command, depending on whether the record to be
+filtered is from the data file or a reference file.  In the variable
+names &lsquo;<samp>n</samp>&rsquo; represents the number of the specified output field,
+numbered from 1.
+</p>
+</dd>
+<dt> &lsquo;<samp>m<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Validate a proposed match using the scheme command provided.  The scheme
+command must return &lsquo;<samp>#t</samp>&rsquo; (to confirm that this is a good match) or
+&lsquo;<samp>#f</samp>&rsquo; (to tell <code>combine</code> that this is not a match).  The variables
+&lsquo;<samp>reference-field-n</samp>&rsquo; and &lsquo;<samp>data-field-n</samp>&rsquo; will be available to the
+scheme command from the reference and data records involved in a
+particular match.  In the variable names &lsquo;<samp>n</samp>&rsquo; represents the number
+of the specified output field, numbered from 1.  The extension
+specification affects the match between the data file and the last named
+reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>h<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Validate a proposed match between two records in the same hierarchy using 
+the scheme command provided.  The scheme command must return &lsquo;<samp>#t</samp>&rsquo; 
+(to confirm that this is a good match) or &lsquo;<samp>#f</samp>&rsquo; (to tell <code>combine</code> 
+that this is not a match).  The variables &lsquo;<samp>reference-field-n</samp>&rsquo; and 
+&lsquo;<samp>prior-reference-field-n</samp>&rsquo; will be available to the scheme command 
+from the prior and current reference records involved in a particular 
+match.  In the variable names &lsquo;<samp>n</samp>&rsquo; represents the number of the 
+specified output field, numbered from 1.  The extension specification 
+affects the match while traversing the hierarchs in the last named 
+reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>r<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Modify a record that has just been read using the scheme command
+provided.  The scheme command must return a string, which will become
+the new value of the input record to be processed.  The input record
+iteself can be referred to in the scheme command by using the variable
+&lsquo;<samp>input-record</samp>&rsquo; in the scheme command at the right place.  The 
+records affected by this option are the records from the most recently 
+named reference file, or from the data file if no reference file has 
+yet been named.
+</p></dd>
+</dl>
+
+<p>As an example, consider that you may have received a file from someone
+who strips all the trailing spaces from the end of a record, but you
+need to treat it with a fixed-width record layout.  Assuming that you
+have defined a scheme function <code>rpad</code> in the initialization file
+&lsquo;<samp>util.scm</samp>&rsquo;, you can use the following command to get at the field
+in positions 200-219, with spaces in place of the missing rest of the
+record.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -X util.scm -x 'r(rpad input-record 219 #\space)' \
+            -o 200-219 trimmed_file.txt
+</pre></td></tr></table>
+
+<p>The same syntax works with the other &lsquo;<samp>--extension</samp>&rsquo; options.
+</p>
+<hr size="6">
+<a name="Guile-Modules"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Extension-Options" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Calendar-Functions" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Guile-Modules-1"></a>
+<h2 class="section">4.2 Guile Modules</h2>
+<a name="index-guile-modules"></a>
+<a name="index-modules_002c-guile"></a>
+
+<p>Here we talk about Guile modules that are distributed with <code>combine</code>.
+At the moment, those are limited to date processing.
+</p>
+<p>In addition, the file &lsquo;<samp>util.scm</samp>&rsquo; in the distribution contains a few
+functions I have found handy.  They are not documented here, and the file 
+doesn&rsquo;t get installed automatically.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Calendar-Functions">4.2.1 Calendar Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Calendar-Reference">4.2.2 Calendar Reference</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Calendar-Parsing">4.2.3 Calendar Parsing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Calendar-Functions"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Guile-Modules" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Calendar-Reference" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Guile-Modules" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Calendar-Functions-1"></a>
+<h3 class="subsection">4.2.1 Calendar Functions</h3>
+<a name="index-calendar-functions"></a>
+<a name="index-extensions_002c-calendar"></a>
+<a name="index-modules_002c-calendar"></a>
+
+<p>Included in the <code>combine</code> package are two Guile modules to work with dates
+from a number of calendars, both obscure and common.  The basis for them is
+the set of calendar functions that are shipped with Emacs.
+</p>
+<p>The reason that these functions deserve special notice here is that date
+comparisons are a common type of comparison that often cannot be made 
+directly on a character string.  For example I might have trouble knowing
+if &quot;20030922&quot; is the same date as &quot;22 September 2003&quot; if I compared strings;
+however, comparing them as dates allows me to find a match.  We can even 
+compare between calendars, ensuring that &quot;1 Tishri 5764&quot; is recognized as the
+same date as &quot;20030927&quot;.
+</p>
+<p>The calendar module can be invoked as <code>(use-modules (combine_scm calendar))</code>.  
+It provides functions for converting from a variety of calendars to and from
+and absolute date count, whose 0-day is the imaginary date 31 December 1 B.C.
+In the functions, the absolute date is treated as a single number, and the
+dates are lists of numbers in <code>(month day year)</code> format unless otherwise 
+specified.
+</p>
+<p>The calendar functions are as follow:
+</p>
+<ul>
+<li> calendar-absolute-from-julian
+</li><li> calendar-julian-from-absolute
+</li><li> calendar-absolute-from-islamic
+</li><li> calendar-islamic-from-absolute
+</li><li> calendar-absolute-from-hebrew
+</li><li> calendar-hebrew-from-absolute
+</li><li> calendar-absolute-from-chinese &lsquo;<samp>(cycle year month day)</samp>&rsquo;
+</li><li> calendar-chinese-from-absolute &lsquo;<samp>(cycle year month day)</samp>&rsquo;
+</li><li> calendar-absolute-from-french
+</li><li> calendar-french-from-absolute
+</li><li> calendar-absolute-from-coptic
+</li><li> calendar-coptic-from-absolute
+</li><li> calendar-absolute-from-ethiopic
+</li><li> calendar-ethiopic-from-absolute
+</li><li> calendar-absolute-from-iso &lsquo;<samp>(week day year)</samp>&rsquo;
+</li><li> calendar-iso-from-absolute &lsquo;<samp>(week day year)</samp>&rsquo;
+</li><li> calendar-absolute-from-persian
+</li><li> calendar-persian-from-absolute
+</li><li> calendar-mayan-long-count-from-absolute &lsquo;<samp>(baktun katun tun uinal kin)</samp>&rsquo;
+</li><li> calendar-mayan-haab-from-absolute &lsquo;<samp>(day . month)</samp>&rsquo;
+</li><li> calendar-mayan-tzolkin-from-absolute &lsquo;<samp>(day . name)</samp>&rsquo;
+</li><li> calendar-absolute-from-445fiscal &lsquo;<samp>(month workday year)</samp>&rsquo;
+</li><li> calendar-445fiscal-from-absolute &lsquo;<samp>(month workday year)</samp>&rsquo;
+</li></ul>
+
+<hr size="6">
+<a name="Calendar-Reference"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Calendar-Functions" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Calendar-Parsing" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Guile-Modules" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Calendar-Reference-1"></a>
+<h3 class="subsection">4.2.2 Calendar Reference</h3>
+<a name="index-calendar-reference"></a>
+<a name="index-reference-strings_002c-calendar"></a>
+
+<p>Here are some variables that can be used as references to get names
+associated with the numbers that the date conversion functions produce
+for months.
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>gregorian-day-name-alist</samp>&rsquo;</dt>
+<dd><p>An associative list giving the weekdays in the Gregorian calendar
+in a variety of languages.  Each element of this list is a list
+composed of a 2-letter language code (lowercase) and a list of 7
+day names.
+</p></dd>
+<dt> &lsquo;<samp>gregorian-month-name-alist</samp>&rsquo;</dt>
+<dd><p>An associative list giving the months in the Gregorian calendar
+in a variety of languages.  Each element of this list is a list
+composed of a 2-letter language code (lowercase) and a list of 12
+month names.
+</p></dd>
+<dt> &lsquo;<samp>calendar-islamic-month-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the months in the Islamic calendar.
+</p></dd>
+<dt> &lsquo;<samp>calendar-hebrew-month-name-array-common-year</samp>&rsquo;</dt>
+<dd><p>A list of the months in the standard Hebrew calendar.
+</p></dd>
+<dt> &lsquo;<samp>calendar-hebrew-month-name-array-leap-year</samp>&rsquo;  </dt>
+<dd><p>A list of the months in the leap year Hebrew calendar.
+</p></dd>
+<dt> &lsquo;<samp>chinese-calendar-celestial-stem</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>chinese-calendar-terrestrial-branch</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>lunar-phase-name-alist</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>solar-n-hemi-seasons-alist</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>solar-s-hemi-seasons-alist</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>french-calendar-month-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the months in the French Revolutionary calendar.
+</p></dd>
+<dt> &lsquo;<samp>french-calendar-multibyte-month-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the months in the French Revolutionary calendar, using
+multibyte codes to represent the accented characters.
+</p></dd>
+<dt> &lsquo;<samp>french-calendar-day-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the days in the French Revolutionary calendar.
+</p></dd>
+<dt> &lsquo;<samp>french-calendar-multibyte-special-days-array</samp>&rsquo;</dt>
+<dd><p>A list of the special days (non weekdays) in the French 
+Revolutionary calendar, using multibyte codes to represent the accented 
+characters.
+</p></dd>
+<dt> &lsquo;<samp>french-calendar-special-days-array</samp>&rsquo;</dt>
+<dd><p>A list of the special days (non weekdays) in the French Revolutionary calendar.
+</p></dd>
+<dt> &lsquo;<samp>coptic-calendar-month-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the months in the Coptic calendar.
+</p></dd>
+<dt> &lsquo;<samp>ethiopic-calendar-month-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the months in the Ethiopic calendar.
+</p></dd>
+<dt> &lsquo;<samp>persian-calendar-month-name-array</samp>&rsquo;</dt>
+<dd><p>A list of the months in the Persian calendar.
+</p></dd>
+<dt> &lsquo;<samp>calendar-mayan-haab-month-name-array</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>calendar-mayan-tzolkin-names-array</samp>&rsquo;</dt>
+</dl>
+
+<hr size="6">
+<a name="Calendar-Parsing"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Calendar-Reference" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Guile-Modules" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Calendar-Parsing-1"></a>
+<h3 class="subsection">4.2.3 Calendar Parsing</h3>
+<a name="index-calendar-parsing"></a>
+<a name="index-parsing_002c-calendar"></a>
+
+<p>The calendar parsing module can be invoked as <code>(use-modules (combine_scm parse))</code>.  
+</p>
+<p>The most useful function in the module is <code>parse-date</code>.  It takes as arguments
+a date string and an output format.  The date string is parsed as well as possible
+in descending order of preference for format in case of ambiguity.  The function 
+returns the date triplet (or other such representation) suggested by the format
+string.
+</p>
+<p>The supported format strings are the words in the function names of the form 
+<code>calendar-xxxx-from-absolute</code> that would take the place of the <code>xxxx</code>.
+See section <a href="#Calendar-Functions">Calendar Functions</a>, for more information.
+</p>
+<p>The parsing of the date string depends on the setting of a couple of variables.
+Look inside the file &lsquo;<samp>parse.scm</samp>&rsquo; for details.  The list <var>parse-date-expected-order</var>
+lists the order in which the parser should look for the year, month, and day in case
+of ambiguity.  The list <var>parse-date-method-preference</var> give more general format 
+preferences, such as 8-digit, delimited, or a word for the month and the expected incoming
+calendar.
+</p>
+<p>Here are a few examples of passing a date and putting it out in some formats:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">guile&gt; (use-modules (combine_scm parse))
+guile&gt; (parse-date &quot;27 September 2003&quot; &quot;gregorian&quot;)
+(9 27 2003)
+guile&gt; (parse-date &quot;27 September 2003&quot; &quot;julian&quot;)
+(9 14 2003)
+</pre></td></tr></table>
+
+<p>The 13 day difference in the calendars is the reason that the Orthodox Christmas
+is 2 weeks after the Roman Catholic Christmas.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">guile&gt; (parse-date &quot;27 September 2003&quot; &quot;hebrew&quot;)
+(7 1 5764)
+</pre></td></tr></table>
+
+<p>Note that the Hebrew date is Rosh HaShannah, the first day of the year 5764.  
+The reason that the month is listed as 7 rather than 1 is inherited from the 
+Emacs calendar implementation.  Using the month list in 
+<var>calendar-hebrew-month-name-array-common-year</var> or 
+<var>calendar-hebrew-month-name-array-leap-year</var> correctly gives &quot;Tishri&quot;, but 
+since the extra month (in years that have it) comes mid-year, the programming 
+choice that I carried forward was to cycle the months around so that the extra 
+month would come at the end of the list.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">guile&gt; (parse-date &quot;27 September 2003&quot; &quot;islamic&quot;)
+(7 30 1424)
+guile&gt; (parse-date &quot;27 September 2003&quot; &quot;iso&quot;)
+(39 6 2003)
+</pre></td></tr></table>
+
+<p>This is the 6th day (Saturday) of week 39 of the year.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">guile&gt; (parse-date &quot;27 September 2003&quot; &quot;mayan-long-count&quot;)
+(12 19 10 11 7)
+</pre></td></tr></table>
+
+<p>I won&rsquo;t get into the detail, but the five numbers reflect the date in
+the Mayan calendar as currently understood.
+</p>
+<p>Generally, I&rsquo;d recommend using the more specific functions if you are sure
+of the date format you expect.  For comparing dates, I would further recommend
+comparing the absolute day count rather than any more formatted format.
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

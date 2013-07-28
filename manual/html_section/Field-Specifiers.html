@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 2.6 Field Specifiers</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 2.6 Field Specifiers">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Field-Specifiers"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Output-Files.html#Output-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Emulation.html#Emulation" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Field-Specifiers-1"></a>
+<h2 class="section">2.6 Field Specifiers</h2>
+
+<p>There are a number of options that require a list of fields from one of
+the files.  All take an argument consisting of a comma-separated list of
+individual field specifications.
+</p>
+<p>The individual field specifications are of the form
+&lsquo;<samp>s-e.p(instruction)</samp>&rsquo;.  As a standard (with no field delimiter
+given for the file), &lsquo;<samp>s</samp>&rsquo; is a number indicating the starting
+position of the field within the records in th given file, and &lsquo;<samp>e</samp>&rsquo; 
+is a number pointing out the ending position.  If there is no hyphen, the
+single number &lsquo;<samp>s</samp>&rsquo; represents a one-byte field at position &lsquo;<samp>s</samp>&rsquo;.
+If the first number and a hyphen exist without the number &lsquo;<samp>e</samp>&rsquo;, then
+the field is assumed to start at &lsquo;<samp>s</samp>&rsquo; and extend to the end of the
+record.  The numbering of the bytes in the record starts at 1.
+</p>
+<p>If you do provide a delimiter for identifying the borders between fields
+in your file, then <code>combine</code> does not need to count bytes, and you
+just need to provide the field number (starting at 1) of the fields you
+want to declare.  Currently, giving a range of fields results in
+<code>combine</code> acting as though you listed every field from the lower end
+to the upper end of the range individually.  Any precision or
+extensibility information you provide will be applied to each field in
+the range.
+</p>
+<p>The optional &lsquo;<samp>.p</samp>&rsquo; gives the number of digits of precision with
+which the field should be considered.  At present its only practical use
+is in fields to be summed from data files, where it is used in converting
+between string and number formats.
+</p>
+<p>The optional &lsquo;<samp>(instruction)</samp>&rsquo; is intended for extensibility.  For
+output fields and key fields it is a scheme command that should be run
+when the field is read into the system.  If the associated field
+specification is a key for matching reference and data records, this can
+affect the way the records are matched.  If it is a field to be written
+to an output file, it will affect what the user sees.
+</p>
+<p>To refer to the field actually read from the source data within the
+scheme command, use the following sceme variable in the appropriate place 
+in the command: &lsquo;<samp>input-field</samp>&rsquo;
+</p>
+<p>Scheme commands attached to individual fields need to return a character
+string and have available only the current text of the field as
+described above<a name="DOCF1" href="combine_fot.html#FOOT1">(1)</a>.  In delimited
+output, feel free to alter the length of the return string at will.  In
+fixed-width output, it will be your responsibility to ensure that you
+return a string of a useful length if you want to maintain the fixed
+structure.
+</p>
+
+<p>In the following string,
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">1-10,15-20.2,30(HiMom input-field),40-
+</pre></td></tr></table>
+
+<p>The fist field runs from position 1 to 10 in the record.  The second from
+15 to 20, with a stated (but possibly meaningless) precision of 2.  The 
+third is the single byte at position 30, to be adjusted by replacing it 
+with whatever the scheme function <code>HiMom</code> does to it.  The fourth 
+field starts at position 40 and extends to the end of the record.
+</p>
+<p>In a delimited example, the following two sets of options are equivalent.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">-D ',' -o 4,5,6,7,8
+-D ',' -o 4-8
+</pre></td></tr></table>
+
+<p>In both cases the fourth, fifth, sixth, seventh, and eighth
+comma-delimited fields are each treated as an individual field for
+processing.  Note that if you also provide a field order (with the
+&lsquo;<samp>-O</samp>&rsquo; option), that order would refer to these fields as 1, 2, 3,
+4, and 5 because of the order in which you specified them, not caring
+about the order in the original file.
+</p>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Output-Files.html#Output-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Emulation.html#Emulation" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

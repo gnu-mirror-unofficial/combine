@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 4.1 Extension Options</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 4.1 Extension Options">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Extension-Options"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Guile-Modules.html#Guile-Modules" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<a name="Extension-Options-1"></a>
+<h2 class="section">4.1 Extension Options</h2>
+<a name="index-extension-options"></a>
+<a name="index-options_002c-extension"></a>
+<p>The remaining extensibility options are called at various points in the
+program: when it starts, when a file is started, when a match is found,
+when a record is read, when a record is written, when a file is closed,
+and at the very end of the program.  The options are listed below along
+with the way to get access to the relevant data.
+</p>
+<p>The various non-field=specific options are as follows.  They all occur
+as arguments to the option &lsquo;<samp>--extension</samp>&rsquo; (or &lsquo;<samp>-x</samp>&rsquo;).
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>l<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Filter records from the current file using the scheme command provided.
+The scheme command must return &lsquo;<samp>#t</samp>&rsquo; (to keep processing the record)
+or &lsquo;<samp>#f</samp>&rsquo; (to ignore this record and move on to the next).  The
+variables &lsquo;<samp>reference-field-n</samp>&rsquo; or &lsquo;<samp>data-field-n</samp>&rsquo; will be
+available to the scheme command, depending on whether the record to be
+filtered is from the data file or a reference file.  In the variable
+names &lsquo;<samp>n</samp>&rsquo; represents the number of the specified output field,
+numbered from 1.
+</p>
+</dd>
+<dt> &lsquo;<samp>m<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Validate a proposed match using the scheme command provided.  The scheme
+command must return &lsquo;<samp>#t</samp>&rsquo; (to confirm that this is a good match) or
+&lsquo;<samp>#f</samp>&rsquo; (to tell <code>combine</code> that this is not a match).  The variables
+&lsquo;<samp>reference-field-n</samp>&rsquo; and &lsquo;<samp>data-field-n</samp>&rsquo; will be available to the
+scheme command from the reference and data records involved in a
+particular match.  In the variable names &lsquo;<samp>n</samp>&rsquo; represents the number
+of the specified output field, numbered from 1.  The extension
+specification affects the match between the data file and the last named
+reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>h<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Validate a proposed match between two records in the same hierarchy using 
+the scheme command provided.  The scheme command must return &lsquo;<samp>#t</samp>&rsquo; 
+(to confirm that this is a good match) or &lsquo;<samp>#f</samp>&rsquo; (to tell <code>combine</code> 
+that this is not a match).  The variables &lsquo;<samp>reference-field-n</samp>&rsquo; and 
+&lsquo;<samp>prior-reference-field-n</samp>&rsquo; will be available to the scheme command 
+from the prior and current reference records involved in a particular 
+match.  In the variable names &lsquo;<samp>n</samp>&rsquo; represents the number of the 
+specified output field, numbered from 1.  The extension specification 
+affects the match while traversing the hierarchs in the last named 
+reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>r<var>scheme-command</var></samp>&rsquo;</dt>
+<dd><p>Modify a record that has just been read using the scheme command
+provided.  The scheme command must return a string, which will become
+the new value of the input record to be processed.  The input record
+iteself can be referred to in the scheme command by using the variable
+&lsquo;<samp>input-record</samp>&rsquo; in the scheme command at the right place.  The 
+records affected by this option are the records from the most recently 
+named reference file, or from the data file if no reference file has 
+yet been named.
+</p></dd>
+</dl>
+
+<p>As an example, consider that you may have received a file from someone
+who strips all the trailing spaces from the end of a record, but you
+need to treat it with a fixed-width record layout.  Assuming that you
+have defined a scheme function <code>rpad</code> in the initialization file
+&lsquo;<samp>util.scm</samp>&rsquo;, you can use the following command to get at the field
+in positions 200-219, with spaces in place of the missing rest of the
+record.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -X util.scm -x 'r(rpad input-record 219 #\space)' \
+            -o 200-219 trimmed_file.txt
+</pre></td></tr></table>
+
+<p>The same syntax works with the other &lsquo;<samp>--extension</samp>&rsquo; options.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Guile-Modules.html#Guile-Modules" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Extending-combine.html#Extending-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

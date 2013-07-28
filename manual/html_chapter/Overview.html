@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 1. Overview of combine</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 1. Overview of combine">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Overview"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="combine.html#Top" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Introduction" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Overview-of-combine"></a>
+<h1 class="chapter">1. Overview of <code>combine</code></h1>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Introduction">1.1 Introduction</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Reporting-Bugs">1.2 Reporting Bugs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Introduction"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Overview" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Ways-to-Use-combine" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Overview" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Introduction-1"></a>
+<h2 class="section">1.1 Introduction</h2>
+
+<p><code>combine</code> is primarily a program for merging files on a common key.
+While such things as table joins on keys are common in database systems
+like MySQL, there seems to be a marked failure in the availability for
+such processing on text files.  <code>combine</code> is intended to fill that
+gap.
+</p>
+<p>Another way of looking at <code>combine</code> is as the kernel of a database
+system without all the overhead (and safeguards) associated with such
+systems.  The missing baggage that appeals most to me is the requirement
+to load data into somebody else&rsquo;s format before working with it.
+<code>combine</code>&rsquo;s design is intended to allow it to work with most data
+directly from the place where it already is.
+</p>
+<p>In looking around for existing software that wanted to do what I wanted
+to do, the closest I came was the <code>join</code> utility in GNU and other
+operating systems.  <code>join</code> has some limitations that I needed
+to overcome.  In particular, in matching it works on only one field each
+in only two files.  For such a match, on files whose fields are
+separated by a delimiter, I&rsquo;m sure that join is a more efficient choice.
+Someday I&rsquo;ll test that assumption.
+</p>
+<p>Once I started writing the program, I had to come up with a name.  Given
+that one of the earliest applications that I imagined for such a program
+would be to prepare data for storage in a data warehouse, I thought to
+where the things that are stored in physical warehouses come from.  At
+that point, I came up with the name DataFactory.  Unfortunately, just as 
+I got ready to release it, I noticed that someone else has that as a 
+registered trademark.
+</p>
+<p>As a result, I have come up with the name <code>combine</code>.  Like the farm
+implement of the same name, this program can be used to separate the wheat 
+from the chaff.  I also like it because it has a similarity to <code>join</code>
+reminiscent of the similarity of function.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+ &mdash; Further Introduction &mdash;
+ 
+</pre></th></tr><tr><td align="left" valign="top"><a href="#Ways-to-Use-combine">1.1.1 Ways to Use <code>combine</code></a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr size="6">
+<a name="Ways-to-Use-combine"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Introduction" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Encrypted-Data" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Introduction" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Ways-to-Use-combine-1"></a>
+<h3 class="subsection">1.1.1 Ways to Use <code>combine</code></h3>
+
+<p>Here are some almost real-world applications of <code>combine</code> that may
+whet your imagination for your own uses.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Encrypted-Data">1.1.1.1 Encrypted Data</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Data-Validation">1.1.1.2 Data Validation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Encrypted-Data"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Ways-to-Use-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Data-Validation" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Ways-to-Use-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Encrypted-Data-1"></a>
+<h4 class="subsubsection">1.1.1.1 Encrypted Data</h4>
+
+<p>Suppose you have a file that you would normally want to keep encrypted
+(say, your customer information, which includes their credit card
+numbers).  Suppose further that you occasionally receive updates of some
+less sensitive information about the customers.
+</p>
+<p>To update the sensitive file, you could unencrypt the file, load all the
+data from both files into a database, merge the data, extract the result
+from the database (making sure to wipe the disk storage that was used),
+and re-encrypt.  That leaves the information open to DBAs and the like
+during the process, and it sure seems like a lot of steps.
+</p>
+<p>Using <code>combine</code> and your favorite encryption program, the data never
+has to touch the disk unencrypted (except in a swap file) so casual
+observers are unlikely to run across sensitive information.  In addition
+an updated encrypted file can be created in one command line, piping the
+input and output of the sensitive data through your encryption program.
+</p>
+<p>Here&rsquo;s a sample command that might do the trick.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">gpg -d &lt; secret_file \
+| combine -w -o 1-300 \
+              -r update_information -k 1-10 -m 1-10 -o 11-20 -p \
+| gpg -e &gt; updated_secret_file
+</pre></td></tr></table>
+
+
+<hr size="6">
+<a name="Data-Validation"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Encrypted-Data" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Reporting-Bugs" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Ways-to-Use-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Data-Validation-1"></a>
+<h4 class="subsubsection">1.1.1.2 Data Validation</h4>
+
+<p>Another example that is often important when receiving data from the
+outside world is data validation.
+</p>
+<p>Perhaps you receive product sales data from a number of retailers, which
+you need to combine with product information you have elsewhere.  To
+confirm that the file you received is valid for reporting, you might need
+to check the product codes, ZIP codes, and retailer codes against your 
+known valid values.
+</p>
+<p>All the comparisons can be done in a single command, which will result in 
+a status which will flag us down if anything did not match to our lists 
+of expected values.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -w -o 1- \
+            -r products.txt -k 1-18 -m 11-28 \
+            -r zip.txt -k 1-5 -m 19-23 \
+            -r customer.txt -k 1-10 -m 1-10 \
+            input.txt \
+  | cmp input.txt
+result=$?
+</pre></td></tr></table>
+
+<p>That&rsquo;s probably enough if we are pretty sure that the incoming data is
+usually clean.  If something does not match up, we can investigate by
+hand.  On the other hand, if we expect to find differences a little more 
+frequently, we can make some small changes.
+</p>
+<p>The following command makes the match optional, but puts a constant &rsquo;$&rsquo;
+at the end of the record for each match among the three keys to be 
+validated.  When there isn&rsquo;t a match, <code>combine</code> puts a space into the 
+record in place of the &rsquo;$&rsquo;.  We can then search for something other
+than &rsquo;$$$&rsquo; at the end of the record to know which records didn&rsquo;t match.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">combine -w -o 1- \
+            -r products.txt -k 1-18 -m 11-28 -k '$' -p \
+            -r zip.txt -k 1-5 -m 19-23 -k '$' -p \
+            -r customer.txt -k 1-10 -m 1-10 -k '$' -p \
+            input.txt \
+  | grep -v '\$\$\$$' &gt; input.nomatch
+</pre></td></tr></table>
+
+<hr size="6">
+<a name="Reporting-Bugs"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Data-Validation" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Overview" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Reporting-Bugs-1"></a>
+<h2 class="section">1.2 Reporting Bugs</h2>
+
+<p>When you find a bug, please be so kind to report it in a way that will
+help the maintainer to understand why it is a bug and how to make it
+happen (so that the correction can be tested).  The information
+necessary to make such a determination will include such things as a
+description of the symptoms (not just your impression of the cause), the
+command line you used to run the program, the options that were used
+when building the program, and anything else that you are not absolutely
+sure is irrelevant.  You can also include the things that you are
+absolutely sure are irrelevant, as one is often sure without good
+reason.
+</p>
+<p>Thank you for taking advantage of this free software.  Your information
+on bugs in your use of the software are very valuable in keeping it as
+useful as possible for all users.  Please report bugs to
+&lt;bug-combine@gnu.org&gt;
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Overview" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

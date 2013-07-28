@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 5.1 Rearranging Fields</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 5.1 Rearranging Fields">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Rearranging-fields"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Aggregation.html#Aggregation" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Rearranging-Fields"></a>
+<h2 class="section">5.1 Rearranging Fields</h2>
+
+<p>When you do not use any reference files, <code>combine</code> still gives you the
+opportunity to create a new record layout based on the records you read.
+</p>
+<p>This is an advantage over the <code>cut</code> utility because while <code>cut</code> 
+only allows you to omit portions of the record, <code>combine</code> also allows 
+you to reorder those fields you keep and to add a constant field somewhere in the
+order.  In addition, <code>combine</code> gives you the chance to convert 
+between fixed-width and delimited formats, where <code>cut</code> keeps the
+format you started with (although the GNU version does let you change 
+delimiters).
+</p>
+<p>Clearly, flexible tools like <code>awk</code> or <code>sed</code> or any programming
+language will also make this kind of thing (and with a little work anything
+<code>combine</code> can do) possible.  It may be that they are a more efficient choice,
+but I have never tested it.
+</p>
+<p>As an example, here is a fixed width file, which contains in its record layout
+some address book information.  If I need to make a tab-delimited file of
+names and phone numbers to upload into my mobile phone, I can use the command
+that follows to get the output I want.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">$ cat testadd.txt
+2125551212Doe       John      123 Main StreetNew York  NY10001
+2025551212Doe       Mary      123 Main StreetWashingtonDC20001
+3015551212Doe       Larry     123 Main StreetLaurel    MD20707
+6175551212Doe       Darryl    123 Main StreetBoston    MA02115
+6035551212Doe       Darryl    123 Main StreetManchesterNH02020
+</pre></td></tr></table>
+
+<p>Here is a command that grabs the first and last name and the phone number
+and tacks the word &quot;Home&quot; on the end so that my phone marks the number with
+a little house.<a name="DOCF2" href="combine_fot.html#FOOT2">(2)</a>
+</p>
+<p>Note that the statistics and the output all show up on the screen if you do 
+not say otherwise.  The statistics are on <code>stderr</code> and the output on
+<code>stdout</code>, so you can redirect them differently.  You can also use the 
+option &lsquo;<samp>--output-file</samp>&rsquo; (or &lsquo;<samp>-t</samp>&rsquo;) to provide an output file,
+and you can suppress the statistics if you want with &lsquo;<samp>--no-statistics</samp>&rsquo;.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">% combine --write-output --output-field-delimiter=&quot;	&quot; \
+          --output-fields=21-30,11-20,1-10 \
+          --output-constant=&quot;Home&quot; testadd.txt
+Statistics for data file testadd.txt
+  Number of records read:                            5
+  Number of records dropped by filter:               0
+  Number of records matched on key:                  5
+  Number of records written:                         5
+John	Doe	2125551212	Home
+Mary	Doe	2025551212	Home
+Larry	Doe	3015551212	Home
+Darryl	Doe	6175551212	Home
+Darryl	Doe	6035551212	Home
+</pre></td></tr></table>
+
+<p>The delimiter between the quotes and in the output was a tab character, and it
+worked, but in some formats it comes out in a space when printed.
+</p>
+<p>For reference, here is a comparable SQL query that would select the same data
+assuming a table were set up containing the data in the file above.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SELECT First_Name, Last_Name, Phone_Number, 'Home'
+  FROM Address_Book;
+</pre></td></tr></table>
+
+<p>A comparable <code>gawk</code> program would be something like this.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">BEGIN {OFS = &quot;\t&quot;}
+{ 
+  print substr ($0, 21, 10), substr ($0, 11, 10), substr ($0, 1, 10), &quot;Home&quot;;
+  }
+</pre></td></tr></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Aggregation.html#Aggregation" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Applying-combine.html#Applying-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Future-Work.html#Future-Work" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

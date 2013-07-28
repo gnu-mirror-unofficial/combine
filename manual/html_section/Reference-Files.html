@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- This manual is for combine (version 0.4.0).
+
+Copyright C 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with the Invariant Sections being "GNU Free Documetation License", no 
+Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled        "GNU
+Free Documentation License".
+
+ -->
+<!-- Created on July 28, 2013 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>combine Manual No value for VERSION: 2.4 Reference Files</title>
+
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="keywords" content="combine Manual No value for VERSION: 2.4 Reference Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Reference-Files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Data-Files.html#Data-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Output-Files.html#Output-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="combine.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="combine_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="Index.html#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="combine_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Reference-Files-1"></a>
+<h2 class="section">2.4 Reference Files</h2>
+<a name="index-reference-file"></a>
+<a name="index-file_002c-reference"></a>
+<a name="index-options_002c-reference-file"></a>
+
+<p>A reference file record is expected to match on a set of key fields to a
+data file record.  The parts of a reference file that are necessary for
+processing are read entirely into memory.  You can specify as many
+reference files as you want, depending only on the amount of memory your
+system can spare to hold them.  For any reference file, it is minimally
+required that you specify a file name, a specification of the key fields
+in the reference file, and a specification of the matching key fields in
+the data file.
+</p>
+<p>The following are the options that are related to reference files.  They
+are all positional, and they apply to the processing of the previously
+named reference file.  (Except of course for the reference file name
+itself, which applies to itself.)
+</p>
+<dl compact="compact">
+<dt> &lsquo;<samp>-r <var>filename</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--reference-file=<var>filename</var></samp>&rsquo;</dt>
+<dd><p>Use <var>filename</var> as a reference file to match to the data file in
+processing.  This option introduces a block of positional options that
+relate to this reference file&rsquo;s processing in <code>combine</code>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-k <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--key-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Use the fields specified by <var>range_string</var> as a key to match to a
+corresponding key in the data file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-m <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--data-key-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Use the fields specified by <var>range_string</var> as the corresponding key
+to a key taken from a reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-a <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hierarchy-key-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Use the fields specified by <var>range_string</var> as a key to perform a
+recursive hierarchical match within the reference file.  This key will
+be matched against values specified in the regular key on the reference
+file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-u</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--unique</samp>&rsquo;</dt>
+<dd><p>Keep only one record for the reference file in memory for each distinct
+key.  By default <code>combine</code> maintains all the records from the
+reference file in memory for processing.  This default allows for
+cartesian products when a key exists multiple times in both the
+reference and data files.
+</p>
+</dd>
+<dt> &lsquo;<samp>-h <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hash-size=<var>number</var></samp>&rsquo;</dt>
+<dd><p>Use the <var>number</var> provided as a base size for allocating a hash table
+to store the records from this reference file.  If this number is too
+small, <code>combine</code> will fail when it tries to record a record it has no
+room for.  If it is only a little bit too small, it will cause
+inefficiency as searching for open space in the hash table will be
+difficult.
+</p>
+</dd>
+<dt> &lsquo;<samp>-H <var>keyword</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hash-movement=<var>keyword</var></samp>&rsquo;</dt>
+<dd><p>One of the keywords <code>binary</code>, <code>number</code>, <code>beginning</code>, 
+or <code>end</code>, indicating how to turn the key into a number with 
+the best variability and least overlap.  The wise choice of this option 
+can cut processing time significantly.  The binary option is the default, 
+and treats the last few bytes (8 on most computers) of the key string(s) 
+as a big number.  The number option converts the entire key to a number
+assuming it is a numeric string.  The other two take the least significant 
+3 bits from each of the first or last few (21 where a 64 bit integer is
+available) bytes in the key strings and turns them into a number.
+</p>
+</dd>
+<dt> &lsquo;<samp>-w</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--write-output</samp>&rsquo;</dt>
+<dd><p>Signals the program that output records should be written for every
+record stored for this reference file.  This will either be one record
+for every record in the reference file or one record for every distinct
+set of keys in the reference file, depending on the setting of the
+option &lsquo;<samp>--unique</samp>&rsquo;.  The record written will include all specified
+output fields from the reference file record, any specified constant
+value for this reference file, and any flag, counter, or sums requested.
+</p>
+</dd>
+<dt> &lsquo;<samp>-t <var>filename</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-file=<var>filename</var></samp>&rsquo;</dt>
+<dd><p>If provided, write the output based on this reference file to
+<var>filename</var>.  Otherwise the output will go to <code>stdout</code>.  This
+option only makes sense if you plan to write output based on this
+reference file.
+</p>
+</dd>
+<dt> &lsquo;<samp>-o <var>range_string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-fields=<var>range_string</var></samp>&rsquo;</dt>
+<dd><p>Write the fields specified by <var>range_string</var> as part of the record
+in any reference-file- or data-file-based output.  The range
+specifications share a common format with all field specifications for
+<code>combine</code>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-K <var>string</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-constant=<var>string</var></samp>&rsquo;</dt>
+<dd><p>Write <var>string</var> to the reference- or data-file-based output.
+</p>
+</dd>
+<dt> &lsquo;<samp>-U</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--up-hierarchy</samp>&rsquo;</dt>
+<dd><p>When traversing the hierarchy from a given reference-file record, use
+the values on that record in the &lsquo;<samp>--hierarchy-key-fields</samp>&rsquo; fields
+to connect to the &lsquo;<samp>--key-fields</samp>&rsquo; fields of other records from the
+reference file.  For most purposes, the presence of the connection on the 
+first record suggests a single parent in a standard hierarchy.  The hierarchy
+traversal stops when the &lsquo;<samp>--hierarchy-key-fields</samp>&rsquo; fields are empty.
+</p>
+<p>If this option is not set, the &lsquo;<samp>--key-fields</samp>&rsquo; fields are used to search 
+for the same values in the &lsquo;<samp>--hierarchy-key-fields</samp>&rsquo; fields of other
+records in the same file.  This allows multiple children of an initial record, 
+and suggests going down in the hierarchy.  The hierarchy traversal stops when 
+no further connection can be made.  The traversal is depth-first.
+</p>
+</dd>
+<dt> &lsquo;<samp>-l</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--hierarchy-leaf-only</samp>&rsquo;</dt>
+<dd><p>When traversing a hierarchy, treat only the endpoints as matching records.
+Nodes that have onward connections are ignored except for navigating to the
+leaf nodes.
+</p>
+</dd>
+<dt> &lsquo;<samp>-F <var>number</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--flatten-hierarchy=<var>number</var></samp>&rsquo;</dt>
+<dd><p>When traversing a hierarchy, act as the &lsquo;<samp>hierarchy-leaf-only</samp>&rsquo;, except
+save information about the intervening nodes.  Repeat the &lsquo;<samp>output-fields</samp>&rsquo;
+fields <var>number</var> times (leaving them blank if there were fewer levels), 
+starting from the first reference record matched.
+</p></dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Data-Files.html#Data-Files" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Output-Files.html#Output-Files" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Invoking-combine.html#Invoking-combine" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="How-combine-Processes-Files.html#How-combine-Processes-Files" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Daniel P. Valentine</em> on <em>July 28, 2013</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>
