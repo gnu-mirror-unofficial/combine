@@ -1,0 +1,1764 @@
+<html lang="en">
+<head>
+<title>`combine' Manual 0.4.0</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="A reference manual for the use of the program combine to process and join files together.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for `combine' (version 0.4.0).
+
+Copyright (C) 2002, 2003, 2004, 2013 Daniel P. Valentine.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation approved
+by the Free Software Foundation or the author.
+
+Permission is granted to quote portions of this document for use in reviews.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">`combine' Manual 0.4.0</h1>
+<div class="node">
+<a name="Top"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Overview">Overview</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+
+</div>
+
+<h2 class="unnumbered"><code>combine</code> Manual</h2>
+
+<p>This manual is for <code>combine</code> version 0.4.0.  It provides general information for processing data files with the combine utility.
+
+<p>--- Chapters ---
+
+<ul class="menu">
+<li><a accesskey="1" href="#Overview">Overview</a>:                            <code>combine</code> in brief. 
+<li><a accesskey="2" href="#Invoking-combine">Invoking combine</a>
+<li><a accesskey="3" href="#How-combine-Processes-Files">How combine Processes Files</a>
+<li><a accesskey="4" href="#Extending-combine">Extending combine</a>
+<li><a accesskey="5" href="#Applying-combine">Applying combine</a>
+<li><a accesskey="6" href="#Future-Work">Future Work</a>
+<li><a accesskey="7" href="#Index">Index</a>
+
+</li></ul>
+<p>--- Direct Access to More Detail ---
+
+<p>Overview of <code>combine</code>
+
+</p>
+<ul class="menu">
+<li><a accesskey="8" href="#Introduction">Introduction</a>
+<li><a accesskey="9" href="#Reporting-Bugs">Reporting Bugs</a>
+
+</li></ul>
+<p>Invoking <code>combine</code>
+
+</p>
+<ul class="menu">
+<li><a href="#General-Options">General Options</a>
+<li><a href="#Data-Files">Data Files</a>
+<li><a href="#Reference-Files">Reference Files</a>
+<li><a href="#Output-Files">Output Files</a>
+<li><a href="#Field-Specifiers">Field Specifiers</a>
+<li><a href="#Emulation">Emulation</a>
+
+</li></ul>
+<p>Extending <code>combine</code>
+
+</p>
+<ul class="menu">
+<li><a href="#Extension-Options">Extension Options</a>:                   Ways to affect processing. 
+<li><a href="#Calendar-Functions">Calendar Functions</a>:                  Date conversion. 
+<li><a href="#Calendar-Reference">Calendar Reference</a>:                  Names of months and things. 
+<li><a href="#Calendar-Parsing">Calendar Parsing</a>:                    Taking in a string.
+
+   </ul>
+
+<div class="node">
+<a name="Overview"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Invoking-combine">Invoking combine</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<!-- node-name,  next,      previous,  up -->
+<h2 class="chapter">1 Overview of <code>combine</code></h2>
+
+<ul class="menu">
+<li><a accesskey="1" href="#Introduction">Introduction</a>
+<li><a accesskey="2" href="#Reporting-Bugs">Reporting Bugs</a>
+</ul>
+
+<div class="node">
+<a name="Introduction"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Overview">Overview</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Overview">Overview</a>
+
+</div>
+
+<h3 class="section">1.1 Introduction</h3>
+
+<p><code>combine</code> is primarily a program for merging files on a common key. 
+While such things as table joins on keys are common in database systems
+like MySQL, there seems to be a marked failure in the availability for
+such processing on text files.  <code>combine</code> is intended to fill that
+gap.
+
+   <p>Another way of looking at <code>combine</code> is as the kernel of a database
+system without all the overhead (and safeguards) associated with such
+systems.  The missing baggage that appeals most to me is the requirement
+to load data into somebody else's format before working with it. 
+<code>combine</code>'s design is intended to allow it to work with most data
+directly from the place where it already is.
+
+   <p>In looking around for existing software that wanted to do what I wanted
+to do, the closest I came was the command <code>join</code> in GNU and other
+operating systems.  The join command has some limitations that I needed
+to overcome.  In particular, in matching it works on only one field each
+in only two files.  For such a match, on files whose fields are
+separated by a delimiter, I'm sure that join is a more efficient choice. 
+Someday I'll test that assumption.
+
+   <p>Once I started writing the program, I had to come up with a name.  Given
+that one of the earliest applications that I imagined for such a program
+would be to prepare data for storage in a data warehouse, I thought to
+where the things that are stored in physical warehouses come from.  At
+that point, I came up with the name DataFactory.  Unfortunately, just as
+I got ready to release it, I noticed that someone else has that as a
+registered trademark.
+
+   <p>As a result, I have come up with the name <code>combine</code>.  Like the farm
+implement of the same name, this program can be used to separate the wheat
+from the chaff.  I also like it because it has a similarity to <code>join</code>
+reminiscent of the similarity of function.
+
+</li></ul>
+<p>--- Further Introduction ---
+
+<ul class="menu">
+<li><a accesskey="1" href="#Ways-to-Use-combine">Ways to Use combine</a>
+</ul>
+
+<div class="node">
+<a name="Ways-to-Use-combine"></a>
+<p><hr>
+Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
+
+</div>
+
+<h4 class="subsection">1.1.1 Ways to Use <code>combine</code></h4>
+
+<p>Here are some almost real-world applications of <code>combine</code> that may
+whet your imagination for your own uses.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Encrypted-Data">Encrypted Data</a>
+<li><a accesskey="2" href="#Key-Validation">Key Validation</a>
+</ul>
+
+<div class="node">
+<a name="Encrypted-Data"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Key-Validation">Key Validation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Ways-to-Use-combine">Ways to Use combine</a>
+
+</div>
+
+<h5 class="subsubsection">1.1.1.1 Encrypted Data</h5>
+
+<p>Suppose you have a file that you would normally want to keep encrypted
+(say, your customer information, which includes their credit card
+numbers).  Suppose further that you occasionally receive updates of some
+less sensitive information about the customers.
+
+   <p>To update the sensitive file, you could unencrypt the file, load all the
+data from both files into a database, merge the data, extract the result
+from the database (making sure to wipe the disk storage that was used),
+and re-encrypt.  That leaves the information open to DBAs and the like
+during the process, and it sure seems like a lot of steps.
+
+   <p>Using <code>combine</code> and your favorite encryption program, the data never
+has to touch the disk unencrypted (except in a swap file) so casual
+observers are unlikely to run across sensitive information.  In addition
+an updated encrypted file can be created in one command line, piping the
+input and output of the sensitive data through your encryption program.
+
+   <p>Here's a sample command that might do the trick.
+
+<pre class="example">     gpg -d &lt; secret_file \
+     | combine -w -o 1-300 \
+                   -r update_information -k 1-10 -m 1-10 -o 11-20 -p \
+     | gpg -e &gt; updated_secret_file
+</pre>
+   <div class="node">
+<a name="Key-Validation"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Encrypted-Data">Encrypted Data</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Ways-to-Use-combine">Ways to Use combine</a>
+
+</div>
+
+<h5 class="subsubsection">1.1.1.2 Key Validation</h5>
+
+<p>Another example that is often important when receiving data from the
+outside world is data validation.
+
+   <p>Perhaps you receive product sales data from a number of retailers, which
+you need to combine with product information you have elsewhere.  To
+confirm that the file you received is valid for reporting, you might need
+to check the product codes, ZIP codes, and retailer codes against your
+known valid values.
+
+   <p>All the comparisons can be done in a single command, which will result in
+a status which will flag us down if anything did not match to our lists
+of expected values.
+
+<pre class="example">     combine -w -o 1- \
+                 -r products.txt -k 1-18 -m 11-28 \
+                 -r zip.txt -k 1-5 -m 19-23 \
+                 -r customer.txt -k 1-10 -m 1-10 \
+                 input.txt \
+       | cmp input.txt
+     result=$?
+</pre>
+   <p>That's probably enough if we are pretty sure that the incoming data is
+usually clean.  If something does not match up, we can investigate by
+hand.  On the other hand, if we expect to find differences a little more
+frequently, we can make some small changes.
+
+   <p>The following command makes the match optional, but puts a constant '$'
+at the end of the record for each match among the three keys to be
+validated.  When there isn't a match, <code>combine</code> puts a space into the
+record in place of the '$'.  We can then search for something other
+than '$$$' at the end of the record to know which records didn't match.
+
+<pre class="example">     combine -w -o 1- \
+                 -r products.txt -k 1-18 -m 11-28 -k '$' -p \
+                 -r zip.txt -k 1-5 -m 19-23 -k '$' -p \
+                 -r customer.txt -k 1-10 -m 1-10 -k '$' -p \
+                 input.txt \
+       | grep -v '\$\$\$$' &gt; input.nomatch
+</pre>
+   <div class="node">
+<a name="Reporting-Bugs"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Introduction">Introduction</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Overview">Overview</a>
+
+</div>
+
+<h3 class="section">1.2 Reporting Bugs</h3>
+
+<p>When you find a bug, please be so kind to report it in a way that will
+help the maintainer to understand why it is a bug and how to make it
+happen (so that the correction can be tested).  The information
+necessary to make such a determination will include such things as a
+description of the symptoms (not just your impression of the cause), the
+command line you used to run the program, the options that were used
+when building the program, and anything else that you are not absolutely
+sure is irrelevant.  You can also include the things that you are
+absolutely sure are irrelevant, as one is often sure without good
+reason.
+
+   <p>Thank you for taking advantage of this free software.  Your information
+on bugs in your use of the software are very valuable in keeping it as
+useful as possible for all users.  Please report bugs to
+&lt;bug-combine@gnu.org&gt;
+
+<div class="node">
+<a name="Invoking-combine"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#How-combine-Processes-Files">How combine Processes Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Overview">Overview</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h2 class="chapter">2 Invoking <code>combine</code></h2>
+
+<p><code>combine</code> is invoked with the command
+
+   <p><samp><span class="command">combine [general options | data file options]... [reference file options]... [data files]</span></samp>
+
+   <p>The various options are described in the following sections.
+
+   <p>The arguments to the command are data files, an optional list of file
+names to be processed or nothing, indicating that the input will come
+from <code>stdin</code>.
+
+<ul class="menu">
+<li><a accesskey="1" href="#General-Options">General Options</a>
+<li><a accesskey="2" href="#File-Options">File Options</a>
+<li><a accesskey="3" href="#Data-Files">Data Files</a>
+<li><a accesskey="4" href="#Reference-Files">Reference Files</a>
+<li><a accesskey="5" href="#Output-Files">Output Files</a>
+<li><a accesskey="6" href="#Field-Specifiers">Field Specifiers</a>
+<li><a accesskey="7" href="#Emulation">Emulation</a>
+</ul>
+
+<div class="node">
+<a name="General-Options"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#File-Options">File Options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Invoking-combine">Invoking combine</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.1 General Options</h3>
+
+<p><a name="index-general-options-1"></a><a name="index-options_002c-general-2"></a>
+The general options are not specific to any particular file and apply to
+the entire current run of the program.  They are listed below.
+
+     <dl>
+<dt><samp><span class="option">-R</span></samp><dt><samp><span class="option">--check-all-reference</span></samp><dt><samp><span class="option">--no-check-all-reference</span></samp><dd>For each data record, check for a match with each of the reference
+files.  This option is set by default.  When turned off with
+<samp><span class="option">--no-check-all-reference</span></samp> and a match to at least one reference
+file is required for the data file record to be considerd for output,
+processing of that data file record will be stopped as soon as a
+required match is not fulfilled.  This could increase speed somewhat and
+will change the meaning of any flags or counters set in
+reference-file-based input.
+
+     <br><dt><samp><span class="option">-f</span></samp><dt><samp><span class="option">--flag</span></samp><dd>In any output based on a reference file, print a flag with the value
+&lsquo;<samp><span class="samp">1</span></samp>&rsquo; if the record was matched by a data record or &lsquo;<samp><span class="samp">0</span></samp>&rsquo;
+otherwise.
+
+     <br><dt><samp><span class="option">-n</span></samp><dt><samp><span class="option">--count</span></samp><dd>In any output based on a reference file, print a new field which is a
+count of the number of data records that matched the current reference
+record.
+
+     <br><dt><samp><span class="option">-z </span><var>number</var></samp><dt><samp><span class="option">--counter-size=</span><var>number</var></samp><dd>If counters or sums of data fields are being written into
+reference-based output, make them <var>number</var> bytes long.
+
+     <br><dt><samp><span class="option">--statistics</span></samp><dt><samp><span class="option">--no-statistics</span></samp><dd>At the end of the processing, write to <code>stderr</code> counts of the
+number of records read and matched from each file processed.  The option
+is enabled by default.  When turned off with <samp><span class="option">--no-statistics</span></samp>
+print no statistics.
+
+     <br><dt><samp><span class="option">--verbose</span></samp><dd>Write all the information that is possible about the processing to
+<code>stderr</code>.  This includes a summary of the options that have been
+set and running counters of the number of records processed.
+
+   </dl>
+
+<div class="node">
+<a name="File-Options"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Data-Files">Data Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#General-Options">General Options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.2 File Options</h3>
+
+<p><a name="index-file-options-3"></a><a name="index-options_002c-file-4"></a><a name="index-file-structure-options-5"></a><a name="index-options_002c-file-structure-6"></a>
+There are some attributes that apply to any file.  They include such
+things as the way to tell one record from another, the way to identify
+fields within a record, and the fiewlds in a file that you want to write
+out.
+
+     <dl>
+<dt><samp><span class="option">-d </span><var>string</var></samp><dt><samp><span class="option">--output-field-delimiter=</span><var>string</var></samp><dd>Print <var>string</var> between each pair of fields written to output files. 
+This can be a comma, a tab character, your mother's maiden name, or the
+full text of the GNU General Public License.  It is your choice.  Of course,
+it is most useful for it to be something that would not normally occur in
+your data fields and something that your target system will understand. 
+Because <code>combine</code> doesn't care about such things, you can even use the
+null character (<code>\0</code>) or the newline character (<code>\n</code>).
+
+     <br><dt><samp><span class="option">--no-output-field-delimiter</span></samp><dd>This means that there is to be no delimiter between fields in the output file
+or files.  It will prevent the input field delimiter from being taken as the
+output field delimiter.  When specified along with <samp><span class="option">--output-field-delimiter</span></samp>,
+the option that appears later will override the prior one.
+
+     <br><dt><samp><span class="option">-b </span><var>string</var></samp><dt><samp><span class="option">--output-record-delimiter=</span><var>string</var></samp><dd>Similarly here <var>string</var> is whatever string you need to use to tell
+the records apart in output files.  If you don't specify it, <code>combine</code>
+will assume that the usual text format applies, the newline on GNU
+operating systems.  (As of this writing, no port has been made to systems
+where a newline is not the standard end-of-line character.)
+
+     <br><dt><samp><span class="option">-D </span><var>string</var></samp><dt><samp><span class="option">--input-field-delimiter=</span><var>string</var></samp><dd>Look for <var>string</var> in the associated input file to determine where
+fields start and end.  It can be any string, but it should be the string
+that really separates fields in your file.  Because <code>combine</code> doesn't
+care about such things, you can even use the null character (<code>\0</code>)
+or the newline character (<code>\n</code>).  At present, there is no interpretation
+of quoted strings.  As a result, you may get unexpected results if the delimiter
+shows up in the middle of one of your fields.
+
+     <p>When specified for the data file, the value specified is used as the input
+field delimiter for all reference files and as the output field delimiter for
+any output files, unless other action is taken.  The options
+<samp><span class="option">--no-input-field-delimiter</span></samp> and <samp><span class="option">--no-output-field-delimiter</span></samp>
+will tell <samp><span class="command">combine</span></samp> that a given file should not have a delimiter.  The
+options <samp><span class="option">--input-field-delimiter</span></samp> and <samp><span class="option">--output-field-delimiter</span></samp>
+will use whatever delimiter you specify rather than the data file input field
+delimiter.
+
+     <br><dt><samp><span class="option">--no-input-field-delimiter</span></samp><dd>This means that there is no delimiter between fields in the specified input file
+or files.  It will prevent the data file input field delimiter from being taken
+as the input field delimiter for a reference file.  When specified along with
+<samp><span class="option">--output-field-delimiter</span></samp>, the option that appears later will override
+the prior one.
+
+     <br><dt><samp><span class="option">-B </span><var>string</var></samp><dt><samp><span class="option">--input-record-delimiter=</span><var>string</var></samp><dd>Similarly here <var>string</var> is whatever string you need to use to tell
+the records apart in input files.  If you don't specify it, <code>combine</code>
+will assume that the usual text format applies, the newline on GNU
+operating systems.
+
+     <br><dt><samp><span class="option">-L </span><var>number</var></samp><dt><samp><span class="option">--input-record-length=</span><var>number</var></samp><dd>If the records are all of the same length (whether of not there is a
+linefeed or a &lsquo;<samp><span class="samp">W</span></samp>&rsquo; between them), you can specify a record length. 
+<code>combine</code> will then split the file into records all of exactly
+<var>NUMBER</var> bytes long.  If there are linefeeds or carriage returns
+between records, be sure to add them to the count.  If the length is not
+specified, <code>combine</code> will assume the records have a delimiter between
+them.
+
+     <br><dt><samp><span class="option">-p</span></samp><dt><samp><span class="option">--match-optional</span></samp><dd>Make it unnecessary to find a match to this file for inclusion in data
+file based output and for the further processing of a data record.  All
+matches are required by default.
+
+     <p>When applied to a reference file, this means that records based on a data
+record may be written without a match to a key in this reference file,
+and any output from fields in this file will be left blank (or substituted
+if specified with the <samp><span class="option">-O</span></samp> option).
+
+     <p>When applied to a data file, this means that in the file based on the data
+file records, records will be written at the end of processing for reference
+file records that were not matched by a data file record.  Any output
+specified from fields in the data file will be left blank (or substituted
+if specified with the <samp><span class="option">-O</span></samp> option).  If there is more than one reference
+file, care should be taken, because the unmatched records from each reference
+file will each become a record in the output file.  This has no effect on
+reference-file-based output.
+
+     <br><dt><samp><span class="option">-P</span></samp><dt><samp><span class="option">--exclude-match</span></samp><dd>Require no match to this file for inclusion in data file based output and
+for the further processing of a data record.  All matches are required and
+included by default.  This differs from <samp><span class="option">--match-optional</span></samp> in that
+records that do have a match are excluded from further consideration.
+
+     <p>When applied to a reference file, this means that records based on a data
+record may only be written when there is no match to a key in this reference
+file, and any output from fields in this file will be left blank (or
+substituted if specified with the <samp><span class="option">-O</span></samp> option).
+
+     <p>When applied to a data file, this means that in the file based on the data
+file records, records will only be written at the end of processing for
+reference file records that were not matched by a data file record.  Any output
+specified from fields in the data file will be left blank (or substituted
+if specified with the <samp><span class="option">-O</span></samp> option).  If there is more than one reference
+file, care should be taken, because the unmatched records from each reference
+file will each become a record in the output file.  This has no effect on
+reference-file-based output.
+
+   </dl>
+
+<div class="node">
+<a name="Data-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Reference-Files">Reference Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#File-Options">File Options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.3 Data Files</h3>
+
+<p><a name="index-data-file-7"></a><a name="index-file_002c-data-8"></a><a name="index-options_002c-data-file-9"></a>
+A data file is either <code>stdin</code>, one or more files, or both.  If
+there is more than one source, they should all share a format that fits
+the specifications provided for output fields, fields holding numeric
+values to be summed, and fields to be used as keys for matching.
+
+   <p>The following are the commands that specifically affect the processing
+of the data file.  Some share the same name with options that can also
+apply to reference files.  Those must be on your command line before you
+present your first reference file.  The others could appear anywhere on
+the command line; however, convention dictates that all the data-file
+options should be together before the first reference file is named.
+
+     <dl>
+<dt><samp><span class="option">-w</span></samp><dt><samp><span class="option">--write-output</span></samp><dd>Signals the program that output records should be written every time a
+data record satisfies the matching criteria with the reference files. 
+The record written will combine all specified output fields from the
+data file record, the matching reference file record, and any specified
+constant values.  This option is a positional option for all files, and
+must appear before the first reference file is named.
+
+     <br><dt><samp><span class="option">-t </span><var>filename</var></samp><dt><samp><span class="option">--output-file=</span><var>filename</var></samp><dd>If provided, write the data-based output to <var>filename</var>.  Otherwise
+the output will go to <code>stdout</code>.  This option only makes sense if
+you plan to write data-file-based output.  This is a positional option
+for all files and must appear before the first reference file is named.
+
+     <br><dt><samp><span class="option">-o </span><var>range_string</var></samp><dt><samp><span class="option">--output-fields=</span><var>range_string</var></samp><dd>Write the fields specified by <var>range_string</var> as part of the record
+in any data-based output.  The range specifications share a common
+format with all field specifications for <code>combine</code>.  This option only
+makes sense if you plan to write data-file-based output.  This is a
+positional option and to apply to the data file it must appear before
+the first reference file is named.
+
+     <br><dt><samp><span class="option">-K </span><var>string</var></samp><dt><samp><span class="option">--output-constant=</span><var>string</var></samp><dd>Write <var>string</var> to the data-file-based output.  This option only
+makes sense if you plan to write data-file-based output.  This is a
+positional option and to apply to the data file it must appear before
+the first reference file is named.
+
+     <br><dt><samp><span class="option">-s </span><var>range_string</var></samp><dt><samp><span class="option">--sum-fields=</span><var>range_string</var></samp><dd>In any reference-file-based output write a sum of the value of the
+fields specified by <var>range_string</var>.  The sum for a given reference
+file record will come from all data file records that matched it.  This
+option only makes sense if you have requested reference-file-based
+output.
+
+     <p>If a precision is provided for a sum field, that precision is honored,
+and decimal fractions up to that many digits will be included in the sum. 
+Any further precision on the input fields will be ignored (without
+rounding) in the sum.  The resulting sum will be written with a decimal
+point and the number of fractional digits implied by the precision.
+
+   </dl>
+
+<div class="node">
+<a name="Reference-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Output-Files">Output Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Data-Files">Data Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.4 Reference Files</h3>
+
+<p><a name="index-reference-file-10"></a><a name="index-file_002c-reference-11"></a><a name="index-options_002c-reference-file-12"></a>
+A reference file record is expected to match on a set of key fields to a
+data file record.  The parts of a reference file that are necessary for
+processing are read entirely into memory.  You can specify as many
+reference files as you want, depending only on the amount of memory your
+system can spare to hold them.  For any reference file, it is minimally
+required that you specify a file name, a specification of the key fields
+in the reference file, and a specification of the matching key fields in
+the data file.
+
+   <p>The following are the options that are related to reference files.  They
+are all positional, and they apply to the processing of the previously
+named reference file.  (Except of course for the reference file name
+itself, which applies to itself.)
+
+     <dl>
+<dt><samp><span class="option">-r </span><var>filename</var></samp><dt><samp><span class="option">--reference-file=</span><var>filename</var></samp><dd>Use <var>filename</var> as a reference file to match to the data file in
+processing.  This option introduces a block of positional options that
+relate to this reference file's processing in DataFactoy.
+
+     <br><dt><samp><span class="option">-k </span><var>range_string</var></samp><dt><samp><span class="option">--key-fields=</span><var>range_string</var></samp><dd>Use the fields specified by <var>range_string</var> as a key to match to a
+corresponding key in the data file.
+
+     <br><dt><samp><span class="option">-m </span><var>range_string</var></samp><dt><samp><span class="option">--data-key-fields=</span><var>range_string</var></samp><dd>Use the fields specified by <var>range_string</var> as the corresponding key
+to a key taken from a reference file.
+
+     <br><dt><samp><span class="option">-a </span><var>range_string</var></samp><dt><samp><span class="option">--hierarchy-key-fields=</span><var>range_string</var></samp><dd>Use the fields specified by <var>range_string</var> as a key to perform a
+recursive hierarchical match within the reference file.  This key will
+be matched against values specified in the regular key on the reference
+file.
+
+     <br><dt><samp><span class="option">-u</span></samp><dt><samp><span class="option">--unique</span></samp><dd>Keep only one record for the reference file in memory for each distinct
+key.  By default <code>combine</code> maintains all the records from the
+reference file in memory for processing.  This default allows for
+cartesian products when a key exists multiple times in both the
+reference and data files.
+
+     <br><dt><samp><span class="option">-h </span><var>number</var></samp><dt><samp><span class="option">--hash-size=</span><var>number</var></samp><dd>Use the <var>number</var> provided as a base size for allocating a hash table
+to store the records from this reference file.  If this number is too
+small, <code>combine</code> will fail when it tries to record a record it has no
+room for.  If it is only a little bit too small, it will cause
+inefficiency as searching for open space in the hash table will be
+difficult.
+
+     <br><dt><samp><span class="option">-H </span><var>keyword</var></samp><dt><samp><span class="option">--hash-movement=</span><var>keyword</var></samp><dd>One of the keywords <code>binary</code>, <code>number</code>, <code>beginning</code>,
+or <code>end</code>, indicating how to turn the key into a number with
+the best variability and least overlap.  The wise choice of this option
+can cut processing time significantly.  The binary option is the default,
+and treats the last few bytes (8 on most computers) of the key string(s)
+as a big number.  The number option converts the entire key to a number
+assuming it is a numeric string.  The other two take the least significant
+3 bits from each of the first or last few (21 where a 64 bit integer is
+available) bytes in the key strings and turns them into a number.
+
+     <br><dt><samp><span class="option">-w</span></samp><dt><samp><span class="option">--write-output</span></samp><dd>Signals the program that output records should be written for every
+record stored for this reference file.  This will either be one record
+for every record in the reference file or one record for every distinct
+set of keys in the reference file, depending on the setting of the
+option <samp><span class="option">--unique</span></samp>.  The record written will include all specified
+output fields from the reference file record, any specified constant
+value for this reference file, and any flag, counter, or sums requested.
+
+     <br><dt><samp><span class="option">-t </span><var>filename</var></samp><dt><samp><span class="option">--output-file=</span><var>filename</var></samp><dd>If provided, write the output based on this reference file to
+<var>filename</var>.  Otherwise the output will go to <code>stdout</code>.  This
+option only makes sense if you plan to write output based on this
+reference file.
+
+     <br><dt><samp><span class="option">-o </span><var>range_string</var></samp><dt><samp><span class="option">--output-fields=</span><var>range_string</var></samp><dd>Write the fields specified by <var>range_string</var> as part of the record
+in any reference-file- or data-file-based output.  The range
+specifications share a common format with all field specifications for
+<code>combine</code>.
+
+     <br><dt><samp><span class="option">-K </span><var>string</var></samp><dt><samp><span class="option">--output-constant=</span><var>string</var></samp><dd>Write <var>string</var> to the reference- or data-file-based output.
+
+     <br><dt><samp><span class="option">-U</span></samp><dt><samp><span class="option">--up-hierarchy</span></samp><dd>When traversing the hierarchy from a given reference-file record, use
+the values on that record in the <samp><span class="option">--hierarchy-key-fields</span></samp> fields
+to connect to the <samp><span class="option">--key-fields</span></samp> fields of other records from the
+reference file.  For most purposes, the presence of the connection on the
+first record suggests a single parent in a standard hierarchy.  The hierarchy
+traversal stops when the <samp><span class="option">--hierarchy-key-fields</span></samp> fields are empty.
+
+     <p>If this option is not set, the <samp><span class="option">--key-fields</span></samp> fields are used to search
+for the same values in the <samp><span class="option">--hierarchy-key-fields</span></samp> fields of other
+records in the same file.  This allows multiple children of an initial record,
+and suggests going down in the hierarchy.  The hierarchy traversal stops when
+no further connection can be made.  The traversal is depth-first.
+
+     <br><dt><samp><span class="option">-l</span></samp><dt><samp><span class="option">--hierarchy-leaf-only</span></samp><dd>When traversing a hierarchy, treat only the endpoints as matching records. 
+Nodes that have onward connections are ignored except for navigating to the
+leaf nodes.
+
+     <br><dt><samp><span class="option">-F </span><var>number</var></samp><dt><samp><span class="option">--flatten-hierarchy=</span><var>number</var></samp><dd>When traversing a hierarchy, act as the <samp><span class="option">hierarchy-leaf-only</span></samp>, except
+save information about the intervening nodes.  Repeat the <samp><span class="option">output-fields</span></samp>
+fields <var>number</var> times (leaving them blank if there were fewer levels),
+starting from the first reference record matched. 
+</dl>
+
+<div class="node">
+<a name="Output-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Field-Specifiers">Field Specifiers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reference-Files">Reference Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.5 Output Files</h3>
+
+<p>There are two basic kinds of output files: one based on the data records
+and reference records that match them, the other based on a full set of
+records from one reference file with flags, counts, or sums based on the
+aggregate of the matching data records.
+
+   <p>The output file based on the data file consists of information from the
+data file records and any matching reference file records.  The records
+that go into data-based output files can be figured out as follows:
+
+     <dl>
+<dt>no reference file<dd>If there is no reference file, there will be one record for every record
+in the data file, with the exception of any records that were elimitated
+through an extension filter. (see <a href="#Extending-combine">Extending combine</a>.)
+
+     <br><dt>reference files with <samp><span class="option">--unique</span></samp> and <samp><span class="option">--match-optional</span></samp> options<dd>If all reference files are specified with the <samp><span class="option">--unique</span></samp> and
+<samp><span class="option">--match-optional</span></samp> options, then the records selected for insertion
+into the data-based output file will be the same as those that would be
+selected without a reference file.
+
+     <br><dt>reference files without the <samp><span class="option">--unique</span></samp> option<dd>If a reference file is not given the <samp><span class="option">--unique</span></samp> option and there
+is more than one reference record that matches a given data record, then
+the data record will be represented more than once in the output file,
+each time combined with information from a different matching reference
+record.  If there is more than one reference file where this is the
+case, the result will be multiplicative (e.g. 2 matches in each of 2
+reference files will produce 4 records).  This is the default setting
+for a reference file.
+
+     <br><dt>reference files without the <samp><span class="option">--match-optional</span></samp> option<dd>If a reference file is not given the <samp><span class="option">--match-optional</span></samp> option, then
+any data record that does not have a match in the reference file will
+not be represented in the output file.  This is the default setting. 
+</dl>
+
+   <p>The fields that can appear in data=file-based output can come from the
+data-file record and any matching reference file records.
+
+   <p>Reference=file-based output files are simpler.  Depending on the
+existence or not of the <samp><span class="option">--unique</span></samp> option, the file will have an
+entry for each of the unique keys or for each of the records in the
+reference file, respectively.
+
+   <p>The fields in the reference=file-based output are exclusively from the
+reference file, except for optional fields that can be summarized from
+fields on matching data-file records.
+
+   <p>The order of the fields in an output record can either be according to
+the default or it can be explicitly specified by the user.
+
+   <p>In data=file-based output, the standard field order is as follows.  All the
+fields listed are printed in this order if they are specified.  If an
+output field delimiter is specified, it is put between every pair of
+adjacent fields.  If there is no match for a given reference file (and
+the <samp><span class="option">--match-optional</span></samp> option is set for the file), all the fields that
+would normally be provided by that file are filled with spaces for
+fixed-width fields or zero-length for delimited output.
+
+     <ul>
+<li>All the data-file output fields (in order)
+<li>The constant string set for the data file
+<li>For each reference file
+
+          <ul>
+  <li>The constant string set for the reference file
+  <li>All the reference-file output fields
+  </ul>
+
+   </ul>
+
+   <p>In reference=file-based output, the standard field order is as follows. 
+All the fields listed are printed in this order if they are specified. 
+If an output field delimiter is specified, it is put between every pair
+of adjacent fields.
+
+     <ul>
+<li>All the reference-file output fields OR the key fields if no output fields are given
+<li>A 1/0 flag indicating whether there was any match
+<li>A counter of the number of data records matched
+<li>A sum of each of the data-file sum fields from each matching data-file record
+</ul>
+
+   <p>The order of the fields in any output file can be customized using the
+<samp><span class="option">--field-order</span></samp> (or <samp><span class="option">-O</span></samp>) option.  The argument for the
+option is a comma-separated list of field identifiers.  Each field
+identifier has 2 parts, a source and a type, separated by a period (.).
+
+   <p>The sources are composed of an &lsquo;<samp><span class="samp">r</span></samp>&rsquo; for reference file or &lsquo;<samp><span class="samp">d</span></samp>&rsquo;
+for data file followed by an optional number.  The number indicates
+which reference file the field comes from and is ignored for data files. 
+Without a number, the first of each is taken.
+
+   <p>A third source &lsquo;<samp><span class="samp">s</span></samp>&rsquo; represents a substitution in the event that the
+preceding reference file field could not be provided because there was
+no match between that reference file and the data file.  The number
+following it, if blank or zero, tells Datafactory to take the field from
+the data file.  Any other number means the corresponding reference file. 
+This allows the conditional update of fields from the data file, or a
+prioritization of selections from a variety of reference files.  If you
+are working with fixed-width fields, you should ensure that the lengths
+of the various fields in the substitution chain are the same.
+
+   <p>The types are composed similarly.  The identifiers are listed below. 
+The number is ignored for identifiers of string constants, flags, and
+counters.  For output fields, a hyphen-separated range of fields can be
+written to avoid having to write a long list.  Any number provided is
+the number of the field in the order it was specified in the <samp><span class="option">-o</span></samp>
+or <samp><span class="option">-s</span></samp> option on the command line.  In delimited-field files
+this may differ from the field number used in those options.
+
+     <dl>
+<dt>&lsquo;<samp><span class="samp">o</span></samp>&rsquo;<dd>Output fields from either reference or data files.
+
+     <br><dt>&lsquo;<samp><span class="samp">k</span></samp>&rsquo;<dd>String constant for either reference or data files.
+
+     <br><dt>&lsquo;<samp><span class="samp">f</span></samp>&rsquo;<dd>Flag (1/0) for reference files.
+
+     <br><dt>&lsquo;<samp><span class="samp">n</span></samp>&rsquo;<dd>Counter for reference files.
+
+     <br><dt>&lsquo;<samp><span class="samp">s</span></samp>&rsquo;<dd>Sum field for reference files.
+
+   </dl>
+
+   <p>Here is an example:
+
+<pre class="example">     --field-order d.o1,d.o2,d.o3,d.k,r1.o1,s2.o1,s0.o4
+     
+     --field-order d.o1-3,d.k,r1.o1,s2.o1,s0.o4
+</pre>
+   <p class="noindent">In this case, the first three fields from the data file are followed by
+the constant string from the data file.  Then, if there was a match to
+reference file 1, the first field from that file is taken, otherwise if
+there was a match to reference file 2, the first field from that file is
+taken.  If neither file matched the data record, the fourth field from
+the data record is taken instead.
+
+   <p>The second line is equivalent, using a range of fields for convenience.
+
+<div class="node">
+<a name="Field-Specifiers"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Emulation">Emulation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Output-Files">Output Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.6 Field Specifiers</h3>
+
+<p>There are a number of options that require a list of fields from one of
+the files.  All take an argument consisting of a comma-separated list of
+individual field specifications.
+
+   <p>The individual field specifications are of the form
+<samp><span class="option">s-e.p(instruction)</span></samp>.  As a standard (with no field delimiter
+given for the file), &lsquo;<samp><span class="samp">s</span></samp>&rsquo; is a number indicating the starting
+position of the field within the given file, and &lsquo;<samp><span class="samp">e</span></samp>&rsquo; is a number
+pointing out the ending position.  If there is no hyphen, then the
+single number &lsquo;<samp><span class="samp">s</span></samp>&rsquo; represents a one-byte field at position &lsquo;<samp><span class="samp">s</span></samp>&rsquo;. 
+If the first number and a hyphen exist without the number &lsquo;<samp><span class="samp">e</span></samp>&rsquo;, then
+the field is assumed to start at &lsquo;<samp><span class="samp">s</span></samp>&rsquo; and extend to the end of the
+record.  The numbering of the bytes in the record starts at 1.
+
+   <p>If you do provide a delimiter for identifying the borders between fields
+in your file, then <code>combine</code> does not need to count bytes, and you
+just need to provide the field number (starting at 1) of the fields you
+want to declare.  Currently, giving a range of fields results in
+<code>combine</code> acting as though you listed every field from the lower end
+to the upper end of the range individually.  Any precision or
+extensibility information you provide will be applied to each field in
+the range.
+
+   <p>The optional &lsquo;<samp><span class="samp">.p</span></samp>&rsquo; gives the number of digits of precision with
+which the field should be considered.  At present its only practical use
+is in fields to be summed from data files, where it is used in converting
+between string and number formats.
+
+   <p>The optional &lsquo;<samp><span class="samp">(instruction)</span></samp>&rsquo; is intended for extensibility.  For
+output fields and key fields it is a scheme command that should be run
+when the field is read into the system.  If the associated field
+specification is a key for matching reference and data records, this can
+affect the way the records are matched.  If it is a field to be written
+to an output file, it will affect what the user sees.
+
+   <p>To refer to the field actually read from the source data within the
+scheme command, use the following sceme variable in the appropriate place
+in the command: &lsquo;<samp><span class="samp">input-field</span></samp>&rsquo;
+
+   <p>Scheme commands attached to individual fields need to return a character
+string and have available only the current text of the field as
+described above<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.  In delimited
+output, feel free to alter the length of the return string at will.  In
+fixed-width output, it will be your responsibility to ensure that you
+return a string of a useful length if you want to maintain the fixed
+structure.
+
+   <p>In the following string,
+
+<pre class="example">     '1-10,15-20.2,30(HiMom input-field),40-'
+</pre>
+   <p class="noindent">The fist field runs from position 1 to 10 in the file.  The second from
+15 to 20, with a stated (but possibly meaningless) precision of 2.  The
+third is the single byte at position 30, to be adjusted by replacing it
+with whatever the instruction <samp><span class="command">HiMom</span></samp> does to it.  The fourth
+field starts at position 40 and extends to the end of the record.
+
+   <p>In a delimited example, the following two sets of options are equivalent.
+
+<pre class="example">     -D ',' -o 4,5,6,7,8
+     -D ',' -o 4-8
+</pre>
+   <p class="noindent">In both cases the fourth, fifth, sixth, seventh, and eighth
+comma-delimited fields are each treated as an individual field for
+processing.  Note that if you also provide a field order (with the
+<samp><span class="option">-O</span></samp> option), that order would refer to these fields as 1, 2, 3,
+4, and 5 because of the order in which you specified them, not caring
+about the order in the original file.
+
+<div class="node">
+<a name="Emulation"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Field-Specifiers">Field Specifiers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Invoking-combine">Invoking combine</a>
+
+</div>
+
+<h3 class="section">2.7 Emulation</h3>
+
+<p>Because of its simularity with <code>join</code>, <code>combine</code> has an emulation
+mode that allows you to use the syntax of the <code>join</code> command to start
+<code>combine</code>.
+
+   <p>The emulation can be started by using <samp><span class="option">--emulate join</span></samp> option as the
+fiest option after the command name.  After that, you can use the same
+options you get with join.
+
+   <p>For details of the <code>join</code> command, see See <a href="coreutils.html#join-invocation">Join Invocation</a>. 
+When tested against the test cases packaged with GNU Coreutils, results are
+identical to join with a couple of exceptions:
+
+     <ul>
+<li>The sort order can be different.  <code>combine</code> produces records in the order
+of the second input file, wich any unmatched records from the first input file
+following in an arbitrary order.
+
+     <li>I change the arguments to the <samp><span class="option">-o</span></samp> option in the test script to have
+quotes around the field order list when it is separated by spaces.  <code>combine</code>
+can handle the space-delimited list, but the standard argument handler
+<code>getopt_long</code> does not interpret them as a single argument.  I don't see the
+need to overcome that.
+
+     <li>There is not a specific test, but I have not yet implemented case-insensitive
+matching.  It would have failed if tested.
+
+     <li>One more option that is not implemented in the emulation are the <samp><span class="option">-j1</span></samp>
+and <samp><span class="option">-j2</span></samp> methods of specifying separate keys for the two files.  Use
+<samp><span class="option">-1</span></samp> and <samp><span class="option">-2</span></samp> for that.  The two obsolete options would be interpreted
+as speciying field 1 or field 2 as the common join key, respectively.
+
+   </ul>
+
+   <p>There are also a number of features of <code>combine</code> that come through in the
+emulation.  The main features relate to the keys: the sort order of the records
+in relation to the keys does not matter to <code>combine</code>, also <code>combine</code>
+allows you to specify a list of key fields (comma-delimited) rather than just
+one as arguments to <samp><span class="option">-1</span></samp>, <samp><span class="option">-2</span></samp>, and <samp><span class="option">-j</span></samp>.  You should make
+sure that the number of key fields is the same.
+
+   <p>Another feature is that the second input file can actually be as many files as
+you want.  That way you can avoid putting the records from several files together
+if not otherwise necessary.
+
+<div class="node">
+<a name="How-combine-Processes-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Extending-combine">Extending combine</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Invoking-combine">Invoking combine</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h2 class="chapter">3 How <code>combine</code> Processes Files</h2>
+
+<p>The base of <code>combine</code> reads records from a data file (or a series of
+them in a row) and if there is an output request for data records, it
+writes the requested fields out to a file or to <code>stdout</code>.  Here is
+an example of this most simple version of events.
+
+<pre class="example">     combine --write-output --output-fields=1-
+</pre>
+   <p class="noindent">This is essentially an expensive pipe.  It reads from <code>stdin</code> and
+writes the entire record back to <code>stdout</code>.
+
+   <p>Introducing a reference file gives more options.  Now <code>combine</code> reads
+the reference file into memory before reading the data file.  For every
+data record, <code>combine</code> then checks to see if it has a match.  The
+following example limits the simple pipe above by restricting the output
+to those records from <code>stdin</code> that share the first 10 bytes in
+common with a record in the reference file.
+
+<pre class="example">     combine -w -o 1- -r reference_file.txt --key-fields=1-10 \
+                 --data-key-fields=1-10 --unique
+</pre>
+   <p class="noindent">Note that the option <samp><span class="option">--unique</span></samp> is used here to prevent more than
+one copy of a key from being stored by <code>combine</code>.  Without it,
+duplicate keys in the reference file, when matched, would result in
+more than one copy of the matching data record.
+
+   <p>The other option with a reference file is to have output based on the
+records in that file, with indicators of how the data file records were
+able to match to them.  In the next example, the same match as above is
+done, but this time we write out a record for every unique key, with a
+flag set to &lsquo;<samp><span class="samp">1</span></samp>&rsquo; if it was matched by a data record or &lsquo;<samp><span class="samp">0</span></samp>&rsquo;
+otherwise.  It still reads the data records from <code>stdin</code> and writes
+the output records to <code>stdout</code>.
+
+<pre class="example">     combine -r -f reference_file.txt -k 1-10 -m 1-10 -u -w -o 1-10
+</pre>
+   <p>Of course, you might want both sets of output at the same time: the list
+of data records that matched the keys in the reference file and a list
+of keys in the reference file with an indication of which ones were
+matched.  In the prior two examples the two different kinds of output
+were written to <code>stdout</code>.  You can do that still if you like, and
+then do a little post-processing to determine where the data-based
+records leave off and the reference-based records begins.  A simpler
+way, however, is to let <code>combine</code> write the information to separate
+files.
+
+   <p>In the following example we combine the output specifications from the
+prior two examples and give them each a filename.  Note that the first
+one has a spelled-out <samp><span class="option">--output-file</span></samp> while the second one uses the
+shorter 1-letter option <samp><span class="option">-t</span></samp>.
+
+<pre class="example">     combine -w -o 1- --output-file testdata.txt \
+                 -r -f reference_file.txt -k 1-10 -m 1-10 \
+                 -u -w -o 1-10 -t testflag.txt
+</pre>
+   <div class="node">
+<a name="Extending-combine"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Applying-combine">Applying combine</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#How-combine-Processes-Files">How combine Processes Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h2 class="chapter">4 Extending <code>combine</code></h2>
+
+<p>If <code>combine</code> was built with Guile (GNU's Ubiquitous Intelligent
+Extensibility Language), you can do anything you want (within reason) to
+extend <code>combine</code>.  This would have been set up when <code>combine</code> was
+compiled and installed on your computer.  In a number of places, there
+are built-in opportunities to call Guile with the data that is currently in
+process.  Using these options, you can use your favorite modules or write your
+own functions in scheme to manipulate the data and to adjust how DafaFactory
+operates on it.
+
+   <p>The most common method (in my current usage) of extending <code>combine</code> is
+to alter the values of fields from the input files before they are used
+for matching or for output.  This is done inside the field list by
+adding the scheme statement after the range and precision.  This is
+covered in the section on field specifications. See <a href="#Field-Specifiers">Field-specific extensions</a>, for details.
+
+   <p>Another useful option is the ability to initialize Guile with your own
+program.  To do this, you can use the <samp><span class="option">--extension-init-file</span></samp> (or
+<samp><span class="option">-X</span></samp>) followed by the file name to ask <code>combine</code> to load that
+scheme file into Guile before any processing.  In that way your
+functions will be available when you need them in the running of the
+program.  It certainly beats writing something complicated on the
+command line.
+
+   <p>In addition, there are Guile modules included in the distribution, which
+can be used in extension scripts.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Extension-Options">Extension Options</a>
+<li><a accesskey="2" href="#Guile-Modules">Guile Modules</a>
+</ul>
+
+<div class="node">
+<a name="Extension-Options"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Guile-Modules">Guile Modules</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extending-combine">Extending combine</a>
+
+</div>
+
+<h3 class="section">4.1 Extension Options</h3>
+
+<p><a name="index-extension-options-13"></a><a name="index-options_002c-extension-14"></a>The reamining extensibility options are called at various points in the
+program: when it starts, when a file is started, when a match is found,
+when a record is read, when a record is written, when a file is closed,
+and at the very end of the program.  The options are listed below along
+with the way to get access to the relevant data.
+
+   <p>The various non-field=specific options are as follows.  They all occur
+as arguments to the option <samp><span class="option">--extension</span></samp> (or <samp><span class="option">-x</span></samp>).
+
+     <dl>
+<dt>&lsquo;<samp><span class="samp">l</span><var>scheme-command</var></samp>&rsquo;<dd>Filter records from the current file using the scheme command provided. 
+The scheme command must return &lsquo;<samp><span class="samp">#t</span></samp>&rsquo; (to keep processing the record)
+or &lsquo;<samp><span class="samp">#f</span></samp>&rsquo; (to ignore this record and move on to the next).  The
+variables &lsquo;<samp><span class="samp">reference-field-n</span></samp>&rsquo; or &lsquo;<samp><span class="samp">data-field-n</span></samp>&rsquo; will be
+available to the scheme command, depending on whether the record to be
+filtered is from the data file or a reference file.  In the variable
+names &lsquo;<samp><span class="samp">n</span></samp>&rsquo; represents the number of the specified output field,
+numbered from 1.
+
+     <br><dt>&lsquo;<samp><span class="samp">m</span><var>scheme-command</var></samp>&rsquo;<dd>Validate a proposed match using the scheme command provided.  The scheme
+command must return &lsquo;<samp><span class="samp">#t</span></samp>&rsquo; (to confirm that this is a good match) or
+&lsquo;<samp><span class="samp">#f</span></samp>&rsquo; (to tell <code>combine</code> that this is not a match).  The variables
+&lsquo;<samp><span class="samp">reference-field-n</span></samp>&rsquo; and &lsquo;<samp><span class="samp">data-field-n</span></samp>&rsquo; will be available to the
+scheme command from the reference and data records involved in a
+particular match.  In the variable names &lsquo;<samp><span class="samp">n</span></samp>&rsquo; represents the number
+of the specified output field, numbered from 1.  The extension
+specification affects the match between the data file and the last named
+reference file.
+
+     <br><dt>&lsquo;<samp><span class="samp">h</span><var>scheme-command</var></samp>&rsquo;<dd>Validate a proposed match between two records in the same hierarchy using
+the scheme command provided.  The scheme command must return &lsquo;<samp><span class="samp">#t</span></samp>&rsquo;
+(to confirm that this is a good match) or &lsquo;<samp><span class="samp">#f</span></samp>&rsquo; (to tell <code>combine</code>
+that this is not a match).  The variables &lsquo;<samp><span class="samp">reference-field-n</span></samp>&rsquo; and
+&lsquo;<samp><span class="samp">prior-reference-field-n</span></samp>&rsquo; will be available to the scheme command
+from the prior and current reference records involved in a particular
+match.  In the variable names &lsquo;<samp><span class="samp">n</span></samp>&rsquo; represents the number of the
+specified output field, numbered from 1.  The extension specification
+affects the match while traversing the hierarchs in the last named
+reference file.
+
+     <br><dt>&lsquo;<samp><span class="samp">r</span><var>scheme-command</var></samp>&rsquo;<dd>Modify a record that has just been read using the scheme command
+provided.  The scheme command must return a string, which will become
+the new value of the input record to be processed.  The input record
+iteself can be referred to in the scheme command by using the variable
+&lsquo;<samp><span class="samp">input-record</span></samp>&rsquo; in the scheme command at the right place.  The
+records affected by this option are the records from the most recently
+named reference file, or from the data file if no reference file has
+yet been named. 
+</dl>
+
+   <p>As an example, consider that you may have received a file from someone
+who strips all the trailing spaces from the end of a record, but you
+need to treat it with a fixed-width record layout.  Assuming that you
+have definied a scheme function <code>rpad</code> in the initialization file
+&lsquo;<samp><span class="samp">util.scm</span></samp>&rsquo;, you can use the following command to get at the field
+in positions 200-219, with spaces in place of the missing rest of the
+record.
+
+<pre class="example">     combine -X util.scm -x 'r(rpad input-record 219 #\space)' \
+                 -o 200-219 trimmed_file.txt
+</pre>
+   <p class="noindent">The same syntax works with the other <samp><span class="option">--extension</span></samp> options.
+
+<div class="node">
+<a name="Guile-Modules"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Extension-Options">Extension Options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extending-combine">Extending combine</a>
+
+</div>
+
+<h3 class="section">4.2 Guile Modules</h3>
+
+<p><a name="index-guile-modules-15"></a><a name="index-modules_002c-guile-16"></a>
+Here we talk about Guile modules that are distributed with <code>combine</code>. 
+At the moment, those are limited to date processing.
+
+   <p>In addition, the file &lsquo;<samp><span class="samp">util.scm</span></samp>&rsquo; in the distribution contains a few
+functions I have found handy.  They are not documented here.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Calendar-Functions">Calendar Functions</a>
+<li><a accesskey="2" href="#Calendar-Reference">Calendar Reference</a>
+<li><a accesskey="3" href="#Calendar-Parsing">Calendar Parsing</a>
+</ul>
+
+<div class="node">
+<a name="Calendar-Functions"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Calendar-Reference">Calendar Reference</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Guile-Modules">Guile Modules</a>
+
+</div>
+
+<h4 class="subsection">4.2.1 Calendar Functions</h4>
+
+<p><a name="index-calendar-functions-17"></a><a name="index-extensions_002c-calendar-18"></a><a name="index-modules_002c-calendar-19"></a>
+Included in the <code>combine</code> package are two Guile modules to work with dates
+from a number of calendars, both obscure and common.  The basis for them is
+the set of calendar functions that are shipped with Emacs.
+
+   <p>The reason that these functions deserve special notice here is that date
+comparisons are a common type of comparison that often cannot be made
+directly on a character string.  For example I might have trouble knowing
+if "20030922" is the same date as "22 September 2003" if I compared strings;
+however, comparing them as dates allows me to find a match.  We can even
+compare between calendars, ensuring that "1 Tishri 5764" is recognized as the
+same date as "20030927".
+
+   <p>The calendar module can be invoked as <code>(use-modules (combine_scm calendar))</code>. 
+It provides functions for converting from a variety of calendars to and from
+and absolute date count, whose 0-day is the imaginary date 31 December 1 B.C. 
+In the functions, the absolute date is treated as a single number, and the
+dates are lists of numbers in <code>(month day year)</code> format unless otherwise
+specified.
+
+   <p>The calendar functions are as follow:
+
+     <ul>
+<li>calendar-julian-from-absolute
+<li>calendar-absolute-from-julian
+<li>calendar-absolute-from-islamic
+<li>calendar-islamic-from-absolute
+<li>calendar-hebrew-from-absolute
+<li>calendar-absolute-from-hebrew
+<li>calendar-absolute-from-chinese &lsquo;<samp><span class="samp">(cycle year month day)</span></samp>&rsquo;
+<li>calendar-chinese-from-absolute &lsquo;<samp><span class="samp">(cycle year month day)</span></samp>&rsquo;
+<li>calendar-absolute-from-french
+<li>calendar-french-from-absolute
+<li>calendar-absolute-from-coptic
+<li>calendar-coptic-from-absolute
+<li>calendar-absolute-from-ethiopic
+<li>calendar-ethiopic-from-absolute
+<li>calendar-absolute-from-iso &lsquo;<samp><span class="samp">(week day year)</span></samp>&rsquo;
+<li>calendar-iso-from-absolute &lsquo;<samp><span class="samp">(week day year)</span></samp>&rsquo;
+<li>calendar-absolute-from-persian
+<li>calendar-persian-from-absolute
+<li>calendar-mayan-long-count-from-absolute &lsquo;<samp><span class="samp">(baktun katun tun uinal kin)</span></samp>&rsquo;
+<li>calendar-mayan-haab-from-absolute &lsquo;<samp><span class="samp">(day . month)</span></samp>&rsquo;
+<li>calendar-mayan-tzolkin-from-absolute &lsquo;<samp><span class="samp">(day . name)</span></samp>&rsquo;
+<li>calendar-445fiscal-from-absolute &lsquo;<samp><span class="samp">(month workday year)</span></samp>&rsquo;
+<li>calendar-absolute-from-445fiscal &lsquo;<samp><span class="samp">(month workday year)</span></samp>&rsquo;
+</ul>
+
+<div class="node">
+<a name="Calendar-Reference"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Calendar-Parsing">Calendar Parsing</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Calendar-Functions">Calendar Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Guile-Modules">Guile Modules</a>
+
+</div>
+
+<h4 class="subsection">4.2.2 Calendar Reference</h4>
+
+<p><a name="index-calendar-reference-20"></a><a name="index-reference-strings_002c-calendar-21"></a>
+Here are some variables that can be used as references to get names
+associated with the numbers that the date conversion functions produce
+for months.
+
+     <dl>
+<dt>&lsquo;<samp><span class="samp">gregorian-day-name-alist</span></samp>&rsquo;<dd>An associative list giving the weekdays in the Gregorian calendar
+in a variety of languages.  Each element of this list is a list
+composed of a 2-letter language code (lowercase) and a list of 7
+day names. 
+<br><dt>&lsquo;<samp><span class="samp">gregorian-month-name-alist</span></samp>&rsquo;<dd>An associative list giving the months in the Gregorian calendar
+in a variety of languages.  Each element of this list is a list
+composed of a 2-letter language code (lowercase) and a list of 12
+month names. 
+<br><dt>&lsquo;<samp><span class="samp">calendar-islamic-month-name-array</span></samp>&rsquo;<dd>A list of the months in the Islamic calendar. 
+<br><dt>&lsquo;<samp><span class="samp">calendar-hebrew-month-name-array-common-year</span></samp>&rsquo;<dd>A list of the months in the standard Hebrew calendar. 
+<br><dt>&lsquo;<samp><span class="samp">calendar-hebrew-month-name-array-leap-year</span></samp>&rsquo;<dd>A list of the months in the leap year Hebrew calendar. 
+<br><dt>&lsquo;<samp><span class="samp">chinese-calendar-celestial-stem</span></samp>&rsquo;<br><dt>&lsquo;<samp><span class="samp">chinese-calendar-terrestrial-branch</span></samp>&rsquo;<br><dt>&lsquo;<samp><span class="samp">lunar-phase-name-alist</span></samp>&rsquo;<br><dt>&lsquo;<samp><span class="samp">solar-n-hemi-seasons-alist</span></samp>&rsquo;<br><dt>&lsquo;<samp><span class="samp">solar-s-hemi-seasons-alist</span></samp>&rsquo;<br><dt>&lsquo;<samp><span class="samp">french-calendar-month-name-array</span></samp>&rsquo;<dd>A list of the months in the French Revolutionary calendar. 
+<br><dt>&lsquo;<samp><span class="samp">french-calendar-multibyte-month-name-array</span></samp>&rsquo;<dd>A list of the months in the French Revolutionary calendar, using
+multibyte codes to represent the accented characters. 
+<br><dt>&lsquo;<samp><span class="samp">french-calendar-day-name-array</span></samp>&rsquo;<dd>A list of the days in the French Revolutionary calendar. 
+<br><dt>&lsquo;<samp><span class="samp">french-calendar-multibyte-special-days-array</span></samp>&rsquo;<dd>A list of the special days (non weekdays) in the French
+Revolutionary calendar, using multibyte codes to represent the accented
+characters. 
+<br><dt>&lsquo;<samp><span class="samp">french-calendar-special-days-array</span></samp>&rsquo;<dd>A list of the special days (non weekdays) in the French Revolutionary calendar. 
+<br><dt>&lsquo;<samp><span class="samp">coptic-calendar-month-name-array</span></samp>&rsquo;<dd>A list of the months in the Coptic calendar. 
+<br><dt>&lsquo;<samp><span class="samp">ethiopic-calendar-month-name-array</span></samp>&rsquo;<dd>A list of the months in the Ethiopic calendar. 
+<br><dt>&lsquo;<samp><span class="samp">persian-calendar-month-name-array</span></samp>&rsquo;<dd>A list of the months in the Persian calendar. 
+<br><dt>&lsquo;<samp><span class="samp">calendar-mayan-haab-month-name-array</span></samp>&rsquo;<br><dt>&lsquo;<samp><span class="samp">calendar-mayan-tzolkin-names-array</span></samp>&rsquo;<dd></dl>
+
+<div class="node">
+<a name="Calendar-Parsing"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Calendar-Reference">Calendar Reference</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Guile-Modules">Guile Modules</a>
+
+</div>
+
+<h4 class="subsection">4.2.3 Calendar Parsing</h4>
+
+<p><a name="index-calendar-parsing-22"></a><a name="index-parsing_002c-calendar-23"></a>
+The calendar parsing module can be invoked as <code>(use-modules (combine_scm parse))</code>.
+
+   <p>The most useful function in the module is <code>parse-date</code>.  It takes as arguments
+a date string and an output format.  The date string is parsed as well as possible
+in descending order of preference for format in case of ambiguity.  The function
+returns the date triplet (or other such representation) suggested by the format
+string.
+
+   <p>The supported format strings are the words in the function names of the form
+<code>calendar-xxxx-from-absolute</code> that would take the place of the <code>xxxx</code>. 
+See <a href="#Calendar-Functions">Calendar Functions</a>, for more information.
+
+   <p>The parsing of the date string depends on the setting of a couple of variables. 
+Look inside the file &lsquo;<samp><span class="samp">parse.scm</span></samp>&rsquo; for details.  The list <var>parse-date-expected-order</var>
+lists the order in which the parser should look for the year, month, and day in case
+of ambiguity.  The list <var>parse-date-method-preference</var> give more general format
+preferences, such as 8-digit, delimited, or a word for the month and the expected incoming
+calendar.
+
+   <p>Here are a few examples of passing a date and putting it out in some formats:
+
+<pre class="example">     guile&gt; (use-modules (combine_scm parse))
+     guile&gt; (parse-date "27 September 2003" "gregorian")
+     (9 27 2003)
+     guile&gt; (parse-date "27 September 2003" "julian")
+     (9 14 2003)
+</pre>
+   <p>The 13 day difference in the calendars is the reason that the Orthodox Christmas
+is 2 weeks after the Roman Catholic Christmas.
+
+<pre class="example">     guile&gt; (parse-date "27 September 2003" "hebrew")
+     (7 1 5764)
+</pre>
+   <p>Note that the Hebrew date is Rosh HaShannah, the first day of the year 5764. 
+The reason that the month is listed as 7 rather than 1 is inherited from the
+Emacs calendar implementation.  Using the month list in
+<var>calendar-hebrew-month-name-array-common-year</var> or
+<var>calendar-hebrew-month-name-array-leap-year</var> correctly gives "Tishri", but
+since the extra month (in years that have it) comes mid-year, the programming
+choice that I carried forward was to cycle the months around so that the extra
+month would come at the end of the list.
+
+<pre class="example">     guile&gt; (parse-date "27 September 2003" "islamic")
+     (7 30 1424)
+     guile&gt; (parse-date "27 September 2003" "iso")
+     (39 6 2003)
+</pre>
+   <p>This is the 6th day (Saturday) of week 39 of the year.
+
+<pre class="example">     guile&gt; (parse-date "27 September 2003" "mayan-long-count")
+     (12 19 10 11 7)
+</pre>
+   <p>I won't get into the detail, but the five numbers reflect the date in
+the Mayan calendar as currently understood.
+
+   <p>Generally, I'd recommend using the more specific functions if you are sure
+of the date format you expect.  For comparing dates, I would further recommend
+comparing the absolute day count rather than any more formatted format.
+
+<div class="node">
+<a name="Applying-combine"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Future-Work">Future Work</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Extending-combine">Extending combine</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h2 class="chapter">5 Applying combine</h2>
+
+<p>There are lots of ways to apply <code>combine</code> to problems that will pop up
+in the course of day-to-day life.  (Of course this fits into your day-to-
+day life a bit more if you have a job or hobby that regularly puts you into
+contact with data files.
+
+   <p>Here are a few topics explored in more detail.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Rearranging-fields">Rearranging fields</a>
+<li><a accesskey="2" href="#Aggregation">Aggregation</a>
+<li><a accesskey="3" href="#Finding-changes">Finding changes</a>
+<li><a accesskey="4" href="#Hierarchies">Hierarchies</a>
+</ul>
+
+<div class="node">
+<a name="Rearranging-fields"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Aggregation">Aggregation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Applying-combine">Applying combine</a>
+
+</div>
+
+<h3 class="section">5.1 Rearranging Fields</h3>
+
+<p>When you do not use any reference files, <code>combine</code> still gives you the
+opportunity to create a new record layout based on the records you read.
+
+   <p>This is an advantage over the <samp><span class="command">cut</span></samp> command because cut allows you
+only to omit portions of the record, <samp><span class="command">combine</span></samp> also allows you to
+reorder those fields you keep and to add a constant field somewhere in the
+order.  In addition, <samp><span class="command">combine</span></samp> gives you the chance to convert
+between fixed-width and delimited formats, where <samp><span class="command">cut</span></samp> keeps the
+format you started with (although the GNU version does let you change
+delimiters).
+
+   <p>Clearly, flexible tools like <samp><span class="command">awk</span></samp> or <samp><span class="command">sed</span></samp> or any programming
+language will also make this kind of thing (and with a little work anything
+<samp><span class="command">combine</span></samp> can do) possible.  It may be that they are a more efficient choice,
+but I prefer to have <samp><span class="command">combine</span></samp>.
+
+   <p>As an example, here is a fixed width file, which contains in its record layout
+some address book information.  If I need to make a tab-delimited file of
+names and phone numbers to upload into my mobile phone, I can use the command
+that follows to get the output I want.
+
+<pre class="example">     $ cat testadd.txt
+     2125551212Doe       John      123 Main StreetNew York  NY10001
+     2025551212Doe       Mary      123 Main StreetWashingtonDC20001
+     3015551212Doe       Larry     123 Main StreetLaurel    MD20707
+     6175551212Doe       Darryl    123 Main StreetBoston    MA02115
+     6035551212Doe       Darryl    123 Main StreetManchesterNH02020
+</pre>
+   <p>Here is a command that graps the first and last name and the phone number
+and tacks the word "Home" on the end so that my phone marks the number with
+a little house.
+
+   <p>Note that the statistics and the output all show up on the screen if you do
+not say otherwise.  The statistics are on <code>stderr</code> and the output on
+<code>stdout</code>, so you can redirect them differently.  You can also use the
+option <samp><span class="option">--output-file</span></samp> (or <samp><span class="option">-t</span></samp>) to provide an output file,
+and you can suppress the statistics if you want with <samp><span class="option">--no-statistics</span></samp>.
+
+<pre class="example">     % combine --write-output --output-field-delimiter="	" \
+               --output-fields=21-30,11-20,1-10 \
+               --output-constant="Home" testadd.txt
+     Statistics for data file testadd.txt
+       Number of records read:                            5
+       Number of records dropped by filter:               0
+       Number of records matched on key:                  5
+       Number of records written:                         5
+     John	Doe	2125551212	Home
+     Mary	Doe	2025551212	Home
+     Larry	Doe	3015551212	Home
+     Darryl	Doe	6175551212	Home
+     Darryl	Doe	6035551212	Home
+</pre>
+   <p>For reference, here is a comparable SQL query that would select the same data
+assuming a table were set up containing the data in the file above.
+
+<pre class="example">     SELECT First_Name, Last_Name, Phone_Number, 'Home'
+       FROM Address_Book;
+</pre>
+   <p>A comparable <samp><span class="command">awk</span></samp> program would be something like this.
+
+<pre class="example">     BEGIN {OFS = "\t"}
+     {
+       print substr ($0, 21, 10), substr ($0, 11, 10), substr ($0, 1, 10), "Home";
+       }
+</pre>
+   <div class="node">
+<a name="Aggregation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Finding-changes">Finding changes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Rearranging-fields">Rearranging fields</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Applying-combine">Applying combine</a>
+
+</div>
+
+<h3 class="section">5.2 Aggregation</h3>
+
+<p>One feature of <samp><span class="command">combine</span></samp> is aggregation.  In other words, based on
+a set of keys in a data file, create a new file containing a summary record
+for each unique combination of values that appears in those keys.
+
+   <p>This is a special case of reference-file based output in that the reference
+file and the data file are the same file.  We are using it both to build
+the list of keys and to provide the values to summarize.
+
+   <p>Here is a simple example.  Suppose my 4-year-old were flipping Sacajawea
+dollar coins and recording the results, along with the time and the date. 
+A portion of the resulting file might look like this:
+
+<pre class="example">     Monday	27 Oct 2003	14:02:01	Head	1.00
+     Monday	27 Oct 2003	14:03:05	Head	1.00
+     Monday	27 Oct 2003	14:03:55	Tail	1.00
+     Monday	27 Oct 2003	14:04:30	Head	1.00
+     Monday	27 Oct 2003	14:06:12	Tail	1.00
+     Monday	27 Oct 2003	14:08:43	Head	1.00
+     Monday	27 Oct 2003	14:54:52	Head	1.00
+     Monday	27 Oct 2003	19:59:59	Tail	1.00
+     Tuesday	28 Oct 2003	08:02:01	Tail	5.00
+     Tuesday	28 Oct 2003	08:02:16	Tail	5.00
+     Tuesday	28 Oct 2003	08:02:31	Head	5.00
+     Tuesday	28 Oct 2003	08:02:46	Tail	5.00
+     Wednesday	29 Oct 2003	12:02:09	Head	10.00
+</pre>
+   <p>Then if I wanted to measure her daily performance, I could count the number
+of coin flips per day, with the following command.
+
+   <p>The option <samp><span class="option">--data-is-reference</span></samp> tells the program to read the file
+only once, bulding the list of keys as it goes.  This is useful for
+aggregations, and it requires that the key fields be the same and that
+we only keep one copy of each key (with the <samp><span class="option">--unique</span></samp> option).
+
+   <p>The records come out in an unspecified order.  If you require a specific
+order, you can pipe the result through the <samp><span class="command">sort</span></samp> command.
+
+<pre class="example">     % combine --input-field-delimiter="	" --data-is-reference \
+               --count --reference-file=testcoin.txt \
+               --output-field-delimiter="," -D "	" \
+               --key-fields=2 --data-key-fields=2 --write-output \
+               --output-fields=2 --unique testcoin.txt
+     28 Oct 2003,4
+     29 Oct 2003,1
+     27 Oct 2003,8
+     Statistics for reference file testcoin.txt
+       Number of records read:                           13
+       Number of records dropped by filter:               0
+       Number of records stored:                          3
+       Number of records matched on key:                  3
+       Number of records matched fully:                   3
+       Number of reference-data matches:                 13
+</pre>
+   <p>An equivalent SQL statement, assuming that the table has been created
+would be.
+
+<pre class="example">     SELECT Date, COUNT (Result)
+       FROM Coinflip
+       GROUP BY Date;
+</pre>
+   <p>If she wanted to count the number of heads and tails, and also the
+amount she bet on each, she could do the following.  (I have shortened
+the options you have already seen to their 1-byte equivalents.)
+
+   <p>The specification of the field to sum says to keep 2 decimal places. 
+<samp><span class="command">combine</span></samp> works with integers if you don't say otherwise.  The
+option <samp><span class="option">--counter-size</span></samp> tells the program to use at least that
+many bytes to present counters and sums.
+
+<pre class="example">     % combine -D "	" -M -n --sum-fields=5.2 --counter-size=8 \
+               -r testcoin.txt -d "," -D "	" -k 4 -m 4 -w -o 4 \
+               -u testcoin.txt
+     Head,       7,   20.00
+     Tail,       6,   18.00
+     Statistics for reference file testcoin.txt
+       Number of records read:                           13
+       Number of records dropped by filter:               0
+       Number of records stored:                          2
+       Number of records matched on key:                  2
+       Number of records matched fully:                   2
+       Number of reference-data matches:                 13
+</pre>
+   <p>An equivalent SQL statement, assuming again that the table has been
+created would be.
+
+<pre class="example">     SELECT Result, COUNT (Result), Sum (Wager)
+       FROM Coinflip
+       GROUP BY Result;
+</pre>
+   <div class="node">
+<a name="Finding-changes"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Hierarchies">Hierarchies</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Aggregation">Aggregation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Applying-combine">Applying combine</a>
+
+</div>
+
+<h3 class="section">5.3 Finding Changes</h3>
+
+<p>If you get the same file again and again, and you want to see what's
+different, the canonical method is to use the <samp><span class="command">diff</span></samp> command. 
+It will list for you those records that are unique to each file, and
+those that appear to have changed.  One drawback is that it requires
+the records in the two files to be in the same order.  Another is that
+it does not pay attention to the key fields that may be important to
+you.
+
+   <p>When I want to find the changes in a file, including additions,
+deletions, and any changes for the information about a key I normally
+use 4 applications of <samp><span class="command">combine</span></samp>.  One command is suffucuent to
+find the new keys.  One is enough to find those that are no longer there. 
+A third finds everything that is different, and the fourth finds the
+before and after image of keys whose information has changed.
+
+   <p>As an example, suppose my bridge club's roster has a name and a phone
+number, separated by commas, for each member.  The following four
+commands will identify the new members, the departed members, and
+those whose phone number has changed.
+
+<pre class="example">     %# Reference file is optional, so unmatched data records will have
+     %# 2 blank fields at the end.
+     % combine -D , -d , -w -o 1-2 -r old_roster.txt -D , -k 1 -m 1 -p \
+               -o 1-2 inew_roster.txt | grep -v ' , $' &gt; new_member.txt
+     %# Data file is optional, so unmatched reference records will have
+     %# 2 blank fields at the beginning.
+     % combine -D , -d , -p -w -o 1-2 -r old_roster.txt -D , -k 1 -m 1 \
+               -o 1-2 inew_roster.txt | grep -v '^ , ' &gt; departed_member.txt
+     %# Both files are optional, so any unmatched records will have
+     %# blank fields at the beginning or end.  Here we match on the
+     %#entire record rather than the key as in the above two examples.
+     % combine -D , -d , -p -w -o 1-2 -r old_roster.txt -D , \
+               -k 1-2 -m 1-2 -o 1-2 -p inew_roster.txt | grep -v ' , ' \
+               &gt; all_changes.txt
+     %# Match up the before and after versions of an entry to see changes.
+     % combine -D , -d , -w -o 1-2 -r all_changes.txt -D , -k 3 -m 1 -o 2 \
+               all_changes.txt | grep -v ' , ' &gt; changed_member.txt
+</pre>
+   <p>TO BE CONTINUED
+
+<div class="node">
+<a name="Hierarchies"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Finding-changes">Finding changes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Applying-combine">Applying combine</a>
+
+</div>
+
+<h3 class="section">5.4 Hierarchies</h3>
+
+<p>A hierarchy tends to be an organization where there is a directional
+one-to-many relationship between parent records and their associated
+children.  <code>combine</code> works with hierarchies within reference files
+when the file has a record for each node and each record points to its
+parent in the hierarchy.
+
+   <p>Because the hierarchy is assumed to be stored in a reference file, it
+is accessed by matching to a data record.  Once an individual reference
+record has been matched to the data record, its relationship to other
+records within the hierarchy is followed through the hierarchy until
+there is no further to go.
+
+   <p>The standard process is to assume that the key that matched to the
+data file key is at the top of the hierarchy.  When traversing the
+hierarchy, <code>combine</code> looks for the key on the current record in
+the hierarchy key of other reference records.  This repeats until
+there are no further linkages from one record to the next.  For each
+record that is linked to the hierarchy, that record is treated as a
+reference record that matched the data record.
+
+   <p>In this section, we'll use the following hierarchy file.  It is a simple
+hierarchy tree with &lsquo;<samp><span class="samp">Grandfather</span></samp>&rsquo; as the top node and 2 levels of
+entries below.
+
+<pre class="example">     Grandfather,
+     Father,Grandfather
+     Uncle,Grandfather
+     Me,Father
+     Brother,Father
+     Cousin,Uncle
+</pre>
+   <p>If my data file consisted only of a record with the key &lsquo;<samp><span class="samp">Grandfather</span></samp>&rsquo;,
+then the following command would result in the records listed after it. 
+Each record written includes the entry itself and its parent.
+
+<pre class="example">     combine -D ',' -w -d ',' -r test1.tmp -k 1 -m 1 -a 2 -D ',' \
+             -o 1-2 test2.tmp
+     
+     Grandfather,
+     Father,Grandfather
+     Me,Father
+     Brother,Father
+     Uncle,Grandfather
+     Cousin,Uncle
+</pre>
+   <p>If we are only interested in the endpoints (in this case all the lowest-level
+descendants of &lsquo;<samp><span class="samp">Grandfather</span></samp>&rsquo;), we can use the option <samp><span class="option">-l</span></samp>.
+
+<pre class="example">     combine -D ',' -w -d ',' -r test1.tmp -k 1 -m 1 -a 2 -D ',' -o 1 \
+             -l test2.tmp
+     
+     Me
+     Brother
+     Cousin
+</pre>
+   <p>We can arrive at the same number of records, each containing the entire hierarchy
+traversed to get to the leaf nodes, by using the option <samp><span class="option">--flatten-hierarchy</span></samp>
+(<samp><span class="option">-F</span></samp>).  This option takes a number as an argument, and then includes
+information from that many records found in traversing the hierarchy, starting from
+the record that matched the data record.  This example tells <code>combine</code> to report
+three levels from the matching &lsquo;<samp><span class="samp">Grandfather</span></samp>&rsquo; record.
+
+<pre class="example">     combine -D ',' -w -d ',' -r test1.tmp -k 1 -m 1 -a 2 -D ',' -o 1 \
+             -F 3 test2.tmp
+     
+     Grandfather,Father,Me
+     Grandfather,Father,Brother
+     Grandfather,Uncle,Cousin
+</pre>
+   <p>As with other areas within <code>combine</code>, the hierarchy manipulation is extensible
+through Guile.  The key fields can be modified as with any other fields.  See <a href="#Field-Specifiers">Field-specific extensions</a>, for details.  The matches within the hierarchy
+can be further filtered, using the <samp><span class="option">h</span></samp> suboption of the option <samp><span class="option">-x</span></samp>. 
+(see <a href="#Extending-combine">Extending combine</a>.)  As with matches between reference records and data
+this filtering can allow you to perform fuzzy comparisons, to do more complex
+calculations to filter the match, or to decide when you have gone far enough and would
+like to stop traversing the hierarchy.
+
+<div class="node">
+<a name="Future-Work"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Index">Index</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Applying-combine">Applying combine</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h2 class="chapter">6 Future Work</h2>
+
+<p>Here is a short list of things that we think will be useful in the near
+future:
+
+   <p>Indexed files.  Add the ability to work with a reference file through an
+index rather than loading the whole thing into a hash table.  Open
+questions are the format of the index and whether to put the entire
+index into memory, or work with it from disk.
+
+<div class="node">
+<a name="Index"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Future-Work">Future Work</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h2 class="unnumbered">Index</h2>
+
+<ul class="index-cp" compact>
+<li><a href="#index-calendar-functions-17">calendar functions</a>: <a href="#Calendar-Functions">Calendar Functions</a></li>
+<li><a href="#index-calendar-parsing-22">calendar parsing</a>: <a href="#Calendar-Parsing">Calendar Parsing</a></li>
+<li><a href="#index-calendar-reference-20">calendar reference</a>: <a href="#Calendar-Reference">Calendar Reference</a></li>
+<li><a href="#index-data-file-7">data file</a>: <a href="#Data-Files">Data Files</a></li>
+<li><a href="#index-extension-options-13">extension options</a>: <a href="#Extension-Options">Extension Options</a></li>
+<li><a href="#index-extensions_002c-calendar-18">extensions, calendar</a>: <a href="#Calendar-Functions">Calendar Functions</a></li>
+<li><a href="#index-file-options-3">file options</a>: <a href="#File-Options">File Options</a></li>
+<li><a href="#index-file-structure-options-5">file structure options</a>: <a href="#File-Options">File Options</a></li>
+<li><a href="#index-file_002c-data-8">file, data</a>: <a href="#Data-Files">Data Files</a></li>
+<li><a href="#index-file_002c-reference-11">file, reference</a>: <a href="#Reference-Files">Reference Files</a></li>
+<li><a href="#index-general-options-1">general options</a>: <a href="#General-Options">General Options</a></li>
+<li><a href="#index-guile-modules-15">guile modules</a>: <a href="#Guile-Modules">Guile Modules</a></li>
+<li><a href="#index-modules_002c-calendar-19">modules, calendar</a>: <a href="#Calendar-Functions">Calendar Functions</a></li>
+<li><a href="#index-modules_002c-guile-16">modules, guile</a>: <a href="#Guile-Modules">Guile Modules</a></li>
+<li><a href="#index-options_002c-data-file-9">options, data file</a>: <a href="#Data-Files">Data Files</a></li>
+<li><a href="#index-options_002c-extension-14">options, extension</a>: <a href="#Extension-Options">Extension Options</a></li>
+<li><a href="#index-options_002c-file-4">options, file</a>: <a href="#File-Options">File Options</a></li>
+<li><a href="#index-options_002c-file-structure-6">options, file structure</a>: <a href="#File-Options">File Options</a></li>
+<li><a href="#index-options_002c-general-2">options, general</a>: <a href="#General-Options">General Options</a></li>
+<li><a href="#index-options_002c-reference-file-12">options, reference file</a>: <a href="#Reference-Files">Reference Files</a></li>
+<li><a href="#index-parsing_002c-calendar-23">parsing, calendar</a>: <a href="#Calendar-Parsing">Calendar Parsing</a></li>
+<li><a href="#index-reference-file-10">reference file</a>: <a href="#Reference-Files">Reference Files</a></li>
+<li><a href="#index-reference-strings_002c-calendar-21">reference strings, calendar</a>: <a href="#Calendar-Reference">Calendar Reference</a></li>
+   </ul>
+<div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_Top" href="#Top"><code>combine</code> Manual</a>
+<li><a name="toc_Overview" href="#Overview">1 Overview of <code>combine</code></a>
+<ul>
+<li><a href="#Introduction">1.1 Introduction</a>
+<ul>
+<li><a href="#Ways-to-Use-combine">1.1.1 Ways to Use <code>combine</code></a>
+<ul>
+<li><a href="#Encrypted-Data">1.1.1.1 Encrypted Data</a>
+<li><a href="#Key-Validation">1.1.1.2 Key Validation</a>
+</li></ul>
+</li></ul>
+<li><a href="#Reporting-Bugs">1.2 Reporting Bugs</a>
+</li></ul>
+<li><a name="toc_Invoking-combine" href="#Invoking-combine">2 Invoking <code>combine</code></a>
+<ul>
+<li><a href="#General-Options">2.1 General Options</a>
+<li><a href="#File-Options">2.2 File Options</a>
+<li><a href="#Data-Files">2.3 Data Files</a>
+<li><a href="#Reference-Files">2.4 Reference Files</a>
+<li><a href="#Output-Files">2.5 Output Files</a>
+<li><a href="#Field-Specifiers">2.6 Field Specifiers</a>
+<li><a href="#Emulation">2.7 Emulation</a>
+</li></ul>
+<li><a name="toc_How-combine-Processes-Files" href="#How-combine-Processes-Files">3 How <code>combine</code> Processes Files</a>
+<li><a name="toc_Extending-combine" href="#Extending-combine">4 Extending <code>combine</code></a>
+<ul>
+<li><a href="#Extension-Options">4.1 Extension Options</a>
+<li><a href="#Guile-Modules">4.2 Guile Modules</a>
+<ul>
+<li><a href="#Calendar-Functions">4.2.1 Calendar Functions</a>
+<li><a href="#Calendar-Reference">4.2.2 Calendar Reference</a>
+<li><a href="#Calendar-Parsing">4.2.3 Calendar Parsing</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_Applying-combine" href="#Applying-combine">5 Applying combine</a>
+<ul>
+<li><a href="#Rearranging-fields">5.1 Rearranging Fields</a>
+<li><a href="#Aggregation">5.2 Aggregation</a>
+<li><a href="#Finding-changes">5.3 Finding Changes</a>
+<li><a href="#Hierarchies">5.4 Hierarchies</a>
+</li></ul>
+<li><a name="toc_Future-Work" href="#Future-Work">6 Future Work</a>
+<li><a name="toc_Index" href="#Index">Index</a>
+</li></ul>
+</div>
+
+<div class="footnote">
+<hr>
+<a name="texinfo-footnotes-in-document"></a><h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> That's not strictly true.  I discovered the
+other day that I can create variables in some extension commands and
+then use them in a subsequent command.  That requires a little
+documentation of the order of processing so you get the values you want,
+but I haven't done that yet.  For now, you can know that a set of field
+specifiers of the same type (like output fields for reference file 1 or
+sum fields from the data file) are processed in order.</p>
+
+   <hr></div>
+
+</body></html>
+
